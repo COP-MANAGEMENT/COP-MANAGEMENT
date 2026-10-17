@@ -1,1 +1,95 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#30363b"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css"><title>COP MANAGEMENT</title></head><body><header><div class="logo">COP</div><div><b>CONGO ONE SERVICES</b><small>Votre sécurité, notre priorité</small></div></header><main><section class="hero"><small>ESPACE DE GESTION</small><h1>Bienvenue sur COP MANAGEMENT</h1><p>Première maquette de gestion de votre entreprise.</p></section><section class="card"><h2>Ajouter un employé</h2><form id="f"><label>Nom complet<input id="n" required></label><label>Fonction<select id="r"><option>Agent de sécurité</option><option>Superviseur</option><option>Agent de nettoyage</option><option>Chauffeur</option><option>Administration</option><option>Autre</option></select></label><label>Téléphone<input id="t" type="tel" placeholder="+243..."></label><button>Enregistrer</button></form><p class="note">Démo uniquement : les données restent dans ce navigateur sur cet appareil.</p></section><section class="card"><h2>Personnel enregistré : <span id="count">0</span></h2><div id="list">Aucun employé pour le moment.</div></section><section class="card"><h2>Modules prévus</h2><div class="grid"><div>👥 Personnel & RH</div><div>🛡️ Gardiennage</div><div>📍 Pointage GPS/QR</div><div>🤝 Clients & contrats</div><div>💰 Finances</div><div>📊 Rapports</div></div></section></main><footer>© CONGO ONE SERVICES SARL</footer><script src="app.js"></script></body></html>
+<!doctype html>
+
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#30363b">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <title>COP MANAGEMENT</title>
+</head><body><header>
+  <div class="logo">COP</div>
+  <div>
+    <b>CONGO ONE SERVICES</b>
+    <small>Votre sécurité, notre priorité</small>
+  </div>
+</header><main>  <section class="hero">
+    <small>PLATEFORME DE GESTION</small>
+    <h1>Bienvenue sur COP MANAGEMENT</h1>
+    <p>La gestion professionnelle de votre personnel et de vos activités.</p>
+  </section>  <section class="card" id="accueil">
+    <h2>Choisissez votre espace</h2>
+    <p>Veuillez sélectionner votre type de connexion.</p><button type="button" onclick="ouvrirConnexion('gerant')">
+  🔐 Connexion du gérant
+  (Administrateur)
+</button>
+
+<br><br>
+
+<button type="button" onclick="ouvrirConnexion('employe')">
+  👤 Connexion des employés
+</button>
+
+  </section>  <section class="card" id="connexion-gerant" hidden>
+    <h2>ESPACE GÉRANT</h2>
+    <p>Accès réservé à l'administrateur de COP SERVICES.</p><form id="adminLoginForm">
+  <label>Adresse e-mail
+    <input type="email" id="adminEmail" required>
+  </label>
+
+  <label>Mot de passe
+    <input type="password" id="adminPassword" required>
+  </label>
+
+  <button type="submit">Se connecter</button>
+</form>
+
+<p id="adminMessage" class="note"></p>
+
+<button type="button" onclick="retourAccueil()">
+  Retour
+</button>
+
+  </section>  <section class="card" id="connexion-employe" hidden>
+    <h2>ESPACE EMPLOYÉ</h2>
+    <p>Connectez-vous avec les identifiants fournis par votre gérant.</p><form id="employeeLoginForm">
+  <label>Adresse e-mail
+    <input type="email" id="employeeEmail" required>
+  </label>
+
+  <label>Mot de passe
+    <input type="password" id="employeePassword" required>
+  </label>
+
+  <button type="submit">Se connecter</button>
+</form>
+
+<p id="employeeMessage" class="note"></p>
+
+<button type="button" onclick="retourAccueil()">
+  Retour
+</button>
+
+  </section></main><footer>
+  © CONGO ONE SERVICES SARL
+  <br>
+  COP MANAGEMENT
+</footer><script>
+function ouvrirConnexion(type) {
+  document.getElementById("accueil").hidden = true;
+
+  document.getElementById("connexion-gerant").hidden =
+    type !== "gerant";
+
+  document.getElementById("connexion-employe").hidden =
+    type !== "employe";
+}
+
+function retourAccueil() {
+  document.getElementById("accueil").hidden = false;
+  document.getElementById("connexion-gerant").hidden = true;
+  document.getElementById("connexion-employe").hidden = true;
+}
+</script></body>
+</html>
