@@ -12,7 +12,6 @@ import {
   getDoc
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
-// CONFIGURATION FIREBASE
 const firebaseConfig = {
   apiKey: "AIzaSyDzmREE5X1wIOLkUBTJLnfFLBThFfrBhSU",
   authDomain: "cop-management.firebaseapp.com",
@@ -23,12 +22,11 @@ const firebaseConfig = {
   measurementId: "G-9M2MGHRC9V"
 };
 
-// INITIALISATION
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// CONNEXION GÉRANT
+// CONNEXION DU GÉRANT
 document.querySelector("#adminLoginForm")
 .addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -44,17 +42,27 @@ document.querySelector("#adminLoginForm")
 
     const userDoc = await getDoc(doc(db, "users", result.user.uid));
 
-    if (!userDoc.exists() || userDoc.data().role !== "admin") {
+    if (!userDoc.exists()) {
       await signOut(auth);
-      message.textContent = "Accès refusé : compte administrateur non autorisé.";
+      message.textContent = "ERREUR : aucun profil trouvé pour cet UID : " + result.user.uid;
+      return;
+    }
+
+    const role = String(userDoc.data().role || "")
+      .trim()
+      .toLowerCase();
+
+    if (role !== "admin") {
+      await signOut(auth);
+      message.textContent = "ERREUR : rôle détecté = [" + role + "]";
       return;
     }
 
     message.textContent = "Connexion réussie. Bienvenue dans votre espace gérant !";
 
   } catch (error) {
-    message.textContent = "Erreur de connexion. Vérifiez votre adresse e-mail et votre mot de passe.";
-    console.error(error);
+    console.error("Erreur administrateur :", error);
+    message.textContent = "Erreur Firebase : " + error.code;
   }
 });
 
@@ -74,17 +82,27 @@ document.querySelector("#employeeLoginForm")
 
     const userDoc = await getDoc(doc(db, "users", result.user.uid));
 
-    if (!userDoc.exists() || userDoc.data().role !== "employee") {
+    if (!userDoc.exists()) {
       await signOut(auth);
-      message.textContent = "Accès refusé : compte employé non autorisé.";
+      message.textContent = "Profil employé introuvable.";
+      return;
+    }
+
+    const role = String(userDoc.data().role || "")
+      .trim()
+      .toLowerCase();
+
+    if (role !== "employee") {
+      await signOut(auth);
+      message.textContent = "Accès refusé : ce compte n'est pas un compte employé.";
       return;
     }
 
     message.textContent = "Connexion réussie. Bienvenue dans COP MANAGEMENT !";
 
   } catch (error) {
-    message.textContent = "Erreur de connexion. Vérifiez vos identifiants.";
-    console.error(error);
+    console.error("Erreur employé :", error);
+    message.textContent = "Erreur Firebase : " + error.code;
   }
 });
 
