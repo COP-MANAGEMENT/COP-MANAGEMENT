@@ -22,14 +22,14 @@
 
 <main>
 
-  <!-- PAGE D'ACCUEIL -->
+  <!-- ACCUEIL -->
 
   <section class="hero">
     <small>PLATEFORME DE GESTION</small>
     <h1>Bienvenue sur COP MANAGEMENT</h1>
     <p>
-      La gestion professionnelle de notre personnel
-      et de nos activités.
+      La gestion professionnelle du personnel,
+      des affectations et des activités de notre société.
     </p>
   </section>
 
@@ -38,11 +38,10 @@
   <section class="card" id="accueil">
 
     <h2>Choisissez votre espace</h2>
-
     <p>Veuillez sélectionner votre type de connexion.</p>
 
     <button type="button" onclick="ouvrirConnexion('gerant')">
-      🔐 Connexion du gérant (Administrateur)
+      🔐 Connexion du gérant
     </button>
 
     <br><br>
@@ -53,16 +52,13 @@
 
   </section>
 
-  <!-- ESPACE GERANT -->
+  <!-- CONNEXION GERANT -->
 
   <section class="card" id="connexion-gerant" hidden>
 
     <h2>ESPACE GÉRANT</h2>
 
-    <p>
-      Accès réservé à l'administrateur de
-      CONGO ONE SERVICES.
-    </p>
+    <p>Accès réservé à l'administrateur de CONGO ONE SERVICES.</p>
 
     <form id="adminLoginForm">
 
@@ -98,22 +94,18 @@
 
   </section>
 
-  <!-- ESPACE EMPLOYE -->
+  <!-- CONNEXION EMPLOYE -->
 
   <section class="card" id="connexion-employe" hidden>
 
     <h2>ESPACE EMPLOYÉ</h2>
 
-    <p>
-      Utilisez le matricule et le mot de passe
-      fournis par votre gérant.
-    </p>
+    <p>Utilisez les identifiants fournis par votre gérant.</p>
 
     <form id="employeeLoginForm">
 
       <label>
         Matricule professionnel
-
         <input
           type="text"
           id="employeeMatricule"
@@ -125,7 +117,6 @@
 
       <label>
         Mot de passe
-
         <input
           type="password"
           id="employeePassword"
@@ -146,7 +137,260 @@
 
   </section>
 
+
+  <!-- TABLEAU DE BORD GERANT -->
+
+  <section class="card" id="adminDashboard" hidden>
+
+    <div class="dashboard-header">
+      <small>CONGO ONE SERVICES SARL</small>
+      <h1>TABLEAU DE BORD</h1>
+      <p>Espace de gestion du gérant</p>
+    </div>
+
+    <!-- VUE GENERALE -->
+
+    <div id="dashboardAccueil">
+
+      <h2>Vue générale</h2>
+
+      <div class="grid">
+
+        <div>
+          <strong>👥 Personnel</strong>
+          <p>Gestion des employés</p>
+        </div>
+
+        <div>
+          <strong>📍 Affectations</strong>
+          <p>Sites de travail</p>
+        </div>
+
+        <div>
+          <strong>🕒 Horaires</strong>
+          <p>Planning du personnel</p>
+        </div>
+
+        <div>
+          <strong>📋 Rapports</strong>
+          <p>Suivi des activités</p>
+        </div>
+
+      </div>
+
+      <h2>Modules de gestion</h2>
+
+      <div class="dashboard-menu">
+
+        <button type="button" onclick="afficherModule('personnel')">
+          👥 Gestion du personnel
+        </button>
+
+        <button type="button" onclick="afficherModule('affectations')">
+          📍 Affectations et sites
+        </button>
+
+        <button type="button" onclick="afficherModule('horaires')">
+          🕒 Horaires et présences
+        </button>
+
+        <button type="button" onclick="afficherModule('rapports')">
+          📋 Rapports d'activités
+        </button>
+
+        <button type="button" onclick="afficherModule('documents')">
+          📁 Documents du personnel
+        </button>
+
+        <button type="button" onclick="afficherModule('conges')">
+          📝 Congés et absences
+        </button>
+
+        <button type="button" onclick="afficherModule('salaires')">
+          💰 Salaires et paiements
+        </button>
+
+        <button type="button" onclick="afficherModule('clients')">
+          🏢 Clients et contrats
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- MODULE PERSONNEL -->
+
+    <section class="card module" id="module-personnel" hidden>
+
+      <h2>Gestion du personnel</h2>
+
+      <p>
+        Gestion des dossiers individuels des employés.
+      </p>
+
+      <h3>Informations à enregistrer</h3>
+
+      <ul>
+        <li>Matricule professionnel</li>
+        <li>Nom, postnom et prénom</li>
+        <li>Date et lieu de naissance</li>
+        <li>Adresse et coordonnées</li>
+        <li>Fonction et département</li>
+        <li>Date d'engagement</li>
+        <li>Formation et qualifications</li>
+        <li>Expériences professionnelles</li>
+        <li>Personne à contacter en cas d'urgence</li>
+      </ul>
+
+      <p class="note">
+        Le formulaire d'enregistrement sera développé
+        dans la prochaine étape.
+      </p>
+
+      <button type="button" onclick="retourModules()">
+        Retour aux modules
+      </button>
+
+    </section>
+
+
+    <!-- MODULE AFFECTATIONS -->
+
+    <section class="card module" id="module-affectations" hidden>
+
+      <h2>Affectations et sites</h2>
+
+      <p>
+        Gestion des clients, des sites de travail,
+        des postes et des agents affectés.
+      </p>
+
+      <button type="button" onclick="retourModules()">
+        Retour aux modules
+      </button>
+
+    </section>
+
+
+    <!-- MODULE HORAIRES -->
+
+    <section class="card module" id="module-horaires" hidden>
+
+      <h2>Horaires et présences</h2>
+
+      <p>
+        Organisation des horaires, des prises de service,
+        des présences et des absences.
+      </p>
+
+      <button type="button" onclick="retourModules()">
+        Retour aux modules
+      </button>
+
+    </section>
+
+
+    <!-- MODULE RAPPORTS -->
+
+    <section class="card module" id="module-rapports" hidden>
+
+      <h2>Rapports d'activités</h2>
+
+      <p>
+        Réception des rapports des agents,
+        avec photos et pièces justificatives.
+      </p>
+
+      <button type="button" onclick="retourModules()">
+        Retour aux modules
+      </button>
+
+    </section>
+
+
+    <!-- MODULE DOCUMENTS -->
+
+    <section class="card module" id="module-documents" hidden>
+
+      <h2>Documents du personnel</h2>
+
+      <p>
+        Gestion des CV, pièces d'identité,
+        diplômes, certificats et contrats.
+      </p>
+
+      <button type="button" onclick="retourModules()">
+        Retour aux modules
+      </button>
+
+    </section>
+
+
+    <!-- MODULE CONGES -->
+
+    <section class="card module" id="module-conges" hidden>
+
+      <h2>Congés et absences</h2>
+
+      <p>
+        Suivi des demandes de congé,
+        des absences et des autorisations.
+      </p>
+
+      <button type="button" onclick="retourModules()">
+        Retour aux modules
+      </button>
+
+    </section>
+
+
+    <!-- MODULE SALAIRES -->
+
+    <section class="card module" id="module-salaires" hidden>
+
+      <h2>Salaires et paiements</h2>
+
+      <p>
+        Gestion des rémunérations,
+        des paiements et des fiches de paie.
+      </p>
+
+      <button type="button" onclick="retourModules()">
+        Retour aux modules
+      </button>
+
+    </section>
+
+
+    <!-- MODULE CLIENTS -->
+
+    <section class="card module" id="module-clients" hidden>
+
+      <h2>Clients et contrats</h2>
+
+      <p>
+        Gestion des clients, des prestations
+        et des contrats commerciaux.
+      </p>
+
+      <button type="button" onclick="retourModules()">
+        Retour aux modules
+      </button>
+
+    </section>
+
+
+    <br>
+
+    <button type="button" onclick="deconnexionAdmin()">
+      🚪 Déconnexion
+    </button>
+
+  </section>
+
 </main>
+
 
 <footer>
   © CONGO ONE SERVICES SARL
@@ -155,6 +399,7 @@
   <br>
   Votre sécurité, notre priorité.
 </footer>
+
 
 <!-- FONCTIONS DE NAVIGATION -->
 
@@ -172,6 +417,7 @@
 
   }
 
+
   function retourAccueil() {
 
     document.getElementById("accueil").hidden = false;
@@ -182,7 +428,38 @@
 
   }
 
+
+  function afficherModule(module) {
+
+    document.getElementById("dashboardAccueil").hidden = true;
+
+    document.querySelectorAll("#adminDashboard .module")
+      .forEach(section => {
+        section.hidden = true;
+      });
+
+    const cible = document.getElementById("module-" + module);
+
+    if (cible) {
+      cible.hidden = false;
+    }
+
+  }
+
+
+  function retourModules() {
+
+    document.querySelectorAll("#adminDashboard .module")
+      .forEach(section => {
+        section.hidden = true;
+      });
+
+    document.getElementById("dashboardAccueil").hidden = false;
+
+  }
+
 </script>
+
 
 <!-- CONNEXION FIREBASE -->
 
