@@ -1,214 +1,401 @@
-import {
-  initializeApp
-} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#30363b">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <title>COP MANAGEMENT | CONGO ONE SERVICES</title>
+</head>
 
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+<body>
 
-import {
-  getFirestore,
-  doc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+<header>
+  <div class="logo">COP</div>
+  <div>
+    <b>CONGO ONE SERVICES</b>
+    <small>Votre sécurité, notre priorité</small>
+  </div>
+</header>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDzmREE5X1wIOLkUBTJLnfFLBThFfrBhSU",
-  authDomain: "cop-management.firebaseapp.com",
-  projectId: "cop-management",
-  storageBucket: "cop-management.firebasestorage.app",
-  messagingSenderId: "602152027077",
-  appId: "1:602152027077:web:2631e9e9eb9fb4feb381ac",
-  measurementId: "G-9M2MGHRC9V"
-};
+<main>
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+  <!-- ACCUEIL -->
+  <section class="hero">
+    <small>PLATEFORME DE GESTION</small>
+    <h1>Bienvenue sur COP MANAGEMENT</h1>
+    <p>
+      La gestion professionnelle du personnel,
+      des affectations et des activités de notre société.
+    </p>
+  </section>
 
+  <!-- CHOIX DE CONNEXION -->
+  <section class="card" id="accueil">
+    <h2>Choisissez votre espace</h2>
+    <p>Veuillez sélectionner votre type de connexion.</p>
 
-// =====================================
-// CONNEXION DU GÉRANT
-// =====================================
+    <button type="button" onclick="ouvrirConnexion('gerant')">
+      🔐 Connexion du gérant
+    </button>
 
-document.querySelector("#adminLoginForm")
-.addEventListener("submit", async (e) => {
+    <br><br>
 
-  e.preventDefault();
+    <button type="button" onclick="ouvrirConnexion('employe')">
+      👤 Connexion des employés
+    </button>
+  </section>
 
-  const message = document.querySelector("#adminMessage");
-  const email = document.querySelector("#adminEmail").value.trim();
-  const password = document.querySelector("#adminPassword").value;
+  <!-- CONNEXION GERANT -->
+  <section class="card" id="connexion-gerant" hidden>
+    <h2>ESPACE GÉRANT</h2>
+    <p>Accès réservé à l'administrateur de CONGO ONE SERVICES.</p>
 
-  message.textContent = "Connexion en cours...";
+    <form id="adminLoginForm">
 
-  try {
+      <label>
+        Adresse e-mail
+        <input
+          type="email"
+          id="adminEmail"
+          placeholder="Votre adresse e-mail"
+          autocomplete="username"
+          required
+        >
+      </label>
 
-    const result = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
+      <label>
+        Mot de passe
+        <input
+          type="password"
+          id="adminPassword"
+          placeholder="Votre mot de passe"
+          autocomplete="current-password"
+          required
+        >
+      </label>
 
-    const userDoc = await getDoc(
-      doc(db, "users", result.user.uid)
-    );
+      <button type="submit">Se connecter</button>
 
-    if (!userDoc.exists()) {
+    </form>
 
-      await signOut(auth);
+    <p id="adminMessage" class="note" role="status"></p>
 
-      message.textContent = "Profil administrateur introuvable.";
-      return;
-    }
+    <button type="button" onclick="retourAccueil()">
+      Retour à l'accueil
+    </button>
+  </section>
 
-    const role = String(userDoc.data().role || "")
-      .trim()
-      .toLowerCase();
+  <!-- CONNEXION EMPLOYE -->
+  <section class="card" id="connexion-employe" hidden>
+    <h2>ESPACE EMPLOYÉ</h2>
+    <p>Utilisez les identifiants fournis par votre gérant.</p>
 
-    if (role !== "admin") {
+    <form id="employeeLoginForm">
 
-      await signOut(auth);
+      <label>
+        Matricule
+        <input
+          type="text"
+          id="employeeMatricule"
+          placeholder="Exemple : COP0001"
+          autocomplete="username"
+          required
+        >
+      </label>
 
-      message.textContent = "Accès refusé : compte non administrateur.";
-      return;
-    }
+      <label>
+        Mot de passe
+        <input
+          type="password"
+          id="employeePassword"
+          placeholder="Votre mot de passe"
+          autocomplete="current-password"
+          required
+        >
+      </label>
 
-    message.textContent =
-      "Connexion réussie. Bienvenue dans votre espace gérant !";
+      <button type="submit">Se connecter</button>
 
-  } catch (error) {
+    </form>
 
-    console.error("Erreur administrateur :", error);
+    <p id="employeeMessage" class="note" role="status"></p>
 
-    message.textContent = "Erreur Firebase : " + error.code;
+    <button type="button" onclick="retourAccueil()">
+      Retour à l'accueil
+    </button>
+  </section>
+
+  <!-- TABLEAU DE BORD GERANT -->
+  <section class="card" id="adminDashboard" hidden>
+
+    <div class="dashboard-header">
+      <div>
+        <small>CONGO ONE SERVICES SARL</small>
+        <h1>Tableau de bord</h1>
+        <p>Espace de gestion du gérant</p>
+      </div>
+    </div>
+
+    <h2>Vue générale</h2>
+
+    <div class="grid">
+      <div>
+        <strong>Personnel</strong>
+        <p>Gestion des employés</p>
+      </div>
+
+      <div>
+        <strong>Affectations</strong>
+        <p>Sites et postes de travail</p>
+      </div>
+
+      <div>
+        <strong>Horaires</strong>
+        <p>Planning du personnel</p>
+      </div>
+
+      <div>
+        <strong>Rapports</strong>
+        <p>Suivi des activités</p>
+      </div>
+    </div>
+
+    <h2>Modules de gestion</h2>
+
+    <div class="dashboard-menu">
+
+      <button type="button" onclick="afficherModule('personnel')">
+        👥 Gestion du personnel
+      </button>
+
+      <button type="button" onclick="afficherModule('affectations')">
+        📍 Affectations et sites
+      </button>
+
+      <button type="button" onclick="afficherModule('horaires')">
+        🕒 Horaires et présences
+      </button>
+
+      <button type="button" onclick="afficherModule('rapports')">
+        📋 Rapports d'activités
+      </button>
+
+      <button type="button" onclick="afficherModule('documents')">
+        📁 Documents du personnel
+      </button>
+
+      <button type="button" onclick="afficherModule('conges')">
+        📝 Congés et absences
+      </button>
+
+      <button type="button" onclick="afficherModule('salaires')">
+        💰 Salaires et paiements
+      </button>
+
+      <button type="button" onclick="afficherModule('clients')">
+        🏢 Clients et contrats
+      </button>
+
+    </div>
+
+    <!-- MODULE PERSONNEL -->
+    <section class="card module" id="module-personnel" hidden>
+      <h2>Gestion du personnel</h2>
+
+      <p>
+        Cet espace permettra d'enregistrer et de consulter
+        les dossiers individuels des employés.
+      </p>
+
+      <h3>Informations à enregistrer</h3>
+
+      <ul>
+        <li>Matricule professionnel</li>
+        <li>Nom, postnom et prénom</li>
+        <li>Date et lieu de naissance</li>
+        <li>Adresse et coordonnées</li>
+        <li>Fonction et département</li>
+        <li>Date d'engagement</li>
+        <li>Formation et qualifications</li>
+        <li>Expériences professionnelles</li>
+        <li>Personne à contacter en cas d'urgence</li>
+      </ul>
+
+      <p class="note">
+        Le formulaire d'enregistrement et la sauvegarde sécurisée
+        seront ajoutés dans la prochaine étape.
+      </p>
+
+      <button type="button" onclick="retourModules()">
+        Retour aux modules
+      </button>
+    </section>
+
+    <!-- MODULE AFFECTATIONS -->
+    <section class="card module" id="module-affectations" hidden>
+      <h2>Affectations et sites</h2>
+      <p>
+        Espace destiné à gérer les clients, les sites de travail,
+        les postes et les agents affectés.
+      </p>
+      <button type="button" onclick="retourModules()">
+        Retour aux modules
+      </button>
+    </section>
+
+    <!-- MODULE HORAIRES -->
+    <section class="card module" id="module-horaires" hidden>
+      <h2>Horaires et présences</h2>
+      <p>
+        Espace destiné à organiser les horaires,
+        les prises de service et les présences.
+      </p>
+      <button type="button" onclick="retourModules()">
+        Retour aux modules
+      </button>
+    </section>
+
+    <!-- MODULE RAPPORTS -->
+    <section class="card module" id="module-rapports" hidden>
+      <h2>Rapports d'activités</h2>
+      <p>
+        Espace destiné à recevoir les rapports des agents,
+        avec photos et pièces justificatives.
+      </p>
+      <button type="button" onclick="retourModules()">
+        Retour aux modules
+      </button>
+    </section>
+
+    <!-- MODULE DOCUMENTS -->
+    <section class="card module" id="module-documents" hidden>
+      <h2>Documents du personnel</h2>
+      <p>
+        Espace destiné aux CV, pièces d'identité,
+        diplômes, certificats et contrats.
+      </p>
+      <button type="button" onclick="retourModules()">
+        Retour aux modules
+      </button>
+    </section>
+
+    <!-- MODULE CONGES -->
+    <section class="card module" id="module-conges" hidden>
+      <h2>Congés et absences</h2>
+      <p>
+        Espace de suivi des demandes de congé,
+        des absences et des autorisations.
+      </p>
+      <button type="button" onclick="retourModules()">
+        Retour aux modules
+      </button>
+    </section>
+
+    <!-- MODULE SALAIRES -->
+    <section class="card module" id="module-salaires" hidden>
+      <h2>Salaires et paiements</h2>
+      <p>
+        Espace de gestion des rémunérations,
+        des paiements et des fiches de paie.
+      </p>
+      <button type="button" onclick="retourModules()">
+        Retour aux modules
+      </button>
+    </section>
+
+    <!-- MODULE CLIENTS -->
+    <section class="card module" id="module-clients" hidden>
+      <h2>Clients et contrats</h2>
+      <p>
+        Espace de gestion des clients,
+        des prestations et des contrats commerciaux.
+      </p>
+      <button type="button" onclick="retourModules()">
+        Retour aux modules
+      </button>
+    </section>
+
+    <br>
+
+    <button type="button" onclick="deconnexionAdmin()">
+      🚪 Déconnexion
+    </button>
+
+  </section>
+
+</main>
+
+<footer>
+  © CONGO ONE SERVICES SARL
+  <br>
+  COP MANAGEMENT
+  <br>
+  Votre sécurité, notre priorité.
+</footer>
+
+<!-- NAVIGATION -->
+<script>
+
+  function ouvrirConnexion(type) {
+
+    document.getElementById("accueil").hidden = true;
+
+    document.getElementById("connexion-gerant").hidden =
+      type !== "gerant";
+
+    document.getElementById("connexion-employe").hidden =
+      type !== "employe";
+
   }
 
-});
+  function retourAccueil() {
 
+    document.getElementById("accueil").hidden = false;
 
-// =====================================
-// CONNEXION DES EMPLOYÉS PAR MATRICULE
-// =====================================
+    document.getElementById("connexion-gerant").hidden = true;
 
-document.querySelector("#employeeLoginForm")
-.addEventListener("submit", async (e) => {
+    document.getElementById("connexion-employe").hidden = true;
 
-  e.preventDefault();
-
-  const message = document.querySelector("#employeeMessage");
-
-  const matricule = document
-    .querySelector("#employeeMatricule")
-    .value
-    .trim()
-    .toUpperCase();
-
-  const password = document
-    .querySelector("#employeePassword")
-    .value;
-
-  message.textContent = "Vérification du matricule...";
-
-  // Vérification du format COP0001
-
-  if (!/^COP\d{4}$/.test(matricule)) {
-
-    message.textContent =
-      "Matricule invalide. Exemple attendu : COP0001";
-
-    return;
   }
 
-  // Identifiant technique interne Firebase
-  // L'employé saisit uniquement son matricule.
+  function afficherModule(module) {
 
-  const emailTechnique =
-    matricule.toLowerCase() + "@cop-management.app";
+    document.getElementById("adminDashboard").querySelectorAll(".module")
+      .forEach(section => section.hidden = true);
 
-  try {
+    document.getElementById("adminDashboard").querySelectorAll(".dashboard-menu")
+      .forEach(menu => menu.hidden = true);
 
-    message.textContent = "Connexion en cours...";
+    document.getElementById("adminDashboard").querySelectorAll("h2")
+      .forEach(titre => {
+        if (titre.textContent === "Vue générale" ||
+            titre.textContent === "Modules de gestion") {
+          titre.hidden = true;
+        }
+      });
 
-    const result = await signInWithEmailAndPassword(
-      auth,
-      emailTechnique,
-      password
-    );
+    document.getElementById("module-" + module).hidden = false;
 
-    const userDoc = await getDoc(
-      doc(db, "users", result.user.uid)
-    );
-
-    if (!userDoc.exists()) {
-
-      await signOut(auth);
-
-      message.textContent = "Profil employé introuvable.";
-      return;
-    }
-
-    const userData = userDoc.data();
-
-    const role = String(userData.role || "")
-      .trim()
-      .toLowerCase();
-
-    const matriculeEnregistre = String(
-      userData.matricule || ""
-    ).trim().toUpperCase();
-
-    if (role !== "employee" ||
-        matriculeEnregistre !== matricule) {
-
-      await signOut(auth);
-
-      message.textContent =
-        "Accès refusé : matricule ou profil non reconnu.";
-
-      return;
-    }
-
-    message.textContent =
-      "Connexion réussie. Bienvenue dans COP MANAGEMENT !";
-
-  } catch (error) {
-
-    console.error("Erreur employé :", error);
-
-    if (
-      error.code === "auth/invalid-credential" ||
-      error.code === "auth/user-not-found" ||
-      error.code === "auth/wrong-password"
-    ) {
-
-      message.textContent =
-        "Matricule ou mot de passe incorrect.";
-
-    } else {
-
-      message.textContent =
-        "Erreur Firebase : " + error.code;
-    }
   }
 
-});
+  function retourModules() {
 
+    document.getElementById("adminDashboard").querySelectorAll(".module")
+      .forEach(section => section.hidden = true);
 
-// =====================================
-// SERVICE WORKER
-// =====================================
+    document.getElementById("adminDashboard").querySelectorAll(".dashboard-menu")
+      .forEach(menu => menu.hidden = false);
 
-if ("serviceWorker" in navigator) {
+    document.getElementById("adminDashboard").querySelectorAll("h2")
+      .forEach(titre => titre.hidden = false);
 
-  window.addEventListener("load", () => {
+  }
 
-    navigator.serviceWorker
-      .register("./sw.js")
-      .catch(console.error);
+</script>
 
-  });
+<script type="module" src="app.js"></script>
 
-}
+</body>
+</html>
