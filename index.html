@@ -1,28 +1,25 @@
-<!doctype html>
-
-<html lang="fr">
+<!DOCTYPE html><html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#30363b">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="styles.css">
-  <title>COP MANAGEMENT</title>
+  <meta name="theme-color" content="#30363b">  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">  <title>COP MANAGEMENT | CONGO ONE SERVICES</title>
 </head><body><header>
   <div class="logo">COP</div>
   <div>
     <b>CONGO ONE SERVICES</b>
     <small>Votre sécurité, notre priorité</small>
   </div>
-</header><main>  <section class="hero">
+</header><main>  <!-- PAGE D'ACCUEIL -->  <section class="hero">
     <small>PLATEFORME DE GESTION</small>
     <h1>Bienvenue sur COP MANAGEMENT</h1>
     <p>La gestion professionnelle de votre personnel et de vos activités.</p>
-  </section>  <section class="card" id="accueil">
-    <h2>Choisissez votre espace</h2>
-    <p>Veuillez sélectionner votre type de connexion.</p><button type="button" onclick="ouvrirConnexion('gerant')">
-  🔐 Connexion du gérant
-  (Administrateur)
+  </section>  <!-- CHOIX DE CONNEXION -->  <section class="card" id="accueil"><h2>Choisissez votre espace</h2>
+
+<p>Veuillez sélectionner votre type de connexion.</p>
+
+<button type="button" onclick="ouvrirConnexion('gerant')">
+  🔐 Connexion du gérant (Administrateur)
 </button>
 
 <br><br>
@@ -31,65 +28,109 @@
   👤 Connexion des employés
 </button>
 
-  </section>  <section class="card" id="connexion-gerant" hidden>
-    <h2>ESPACE GÉRANT</h2>
-    <p>Accès réservé à l'administrateur de COP SERVICES.</p><form id="adminLoginForm">
-  <label>Adresse e-mail
-    <input type="email" id="adminEmail" required>
+  </section>  <!-- ESPACE GERANT -->  <section class="card" id="connexion-gerant" hidden><h2>ESPACE GÉRANT</h2>
+
+<p>Accès réservé à l'administrateur de CONGO ONE SERVICES.</p>
+
+<form id="adminLoginForm">
+
+  <label>
+    Adresse e-mail
+    <input
+      type="email"
+      id="adminEmail"
+      placeholder="Votre adresse e-mail"
+      autocomplete="username"
+      required
+    >
   </label>
 
-  <label>Mot de passe
-    <input type="password" id="adminPassword" required>
+  <label>
+    Mot de passe
+    <input
+      type="password"
+      id="adminPassword"
+      placeholder="Votre mot de passe"
+      autocomplete="current-password"
+      required
+    >
   </label>
 
   <button type="submit">Se connecter</button>
+
 </form>
 
-<p id="adminMessage" class="note"></p>
+<p id="adminMessage" class="note" role="status"></p>
 
 <button type="button" onclick="retourAccueil()">
-  Retour
+  Retour à l'accueil
 </button>
 
-  </section>  <section class="card" id="connexion-employe" hidden>
-    <h2>ESPACE EMPLOYÉ</h2>
-    <p>Connectez-vous avec les identifiants fournis par votre gérant.</p><form id="employeeLoginForm">
-  <label>Adresse e-mail
-    <input type="email" id="employeeEmail" required>
+  </section>  <!-- ESPACE EMPLOYE -->  <section class="card" id="connexion-employe" hidden><h2>ESPACE EMPLOYÉ</h2>
+
+<p>Utilisez les identifiants fournis par votre gérant.</p>
+
+<form id="employeeLoginForm">
+
+  <label>
+    Adresse e-mail
+    <input
+      type="email"
+      id="employeeEmail"
+      placeholder="Votre adresse e-mail"
+      autocomplete="username"
+      required
+    >
   </label>
 
-  <label>Mot de passe
-    <input type="password" id="employeePassword" required>
+  <label>
+    Mot de passe
+    <input
+      type="password"
+      id="employeePassword"
+      placeholder="Votre mot de passe"
+      autocomplete="current-password"
+      required
+    >
   </label>
 
   <button type="submit">Se connecter</button>
+
 </form>
 
-<p id="employeeMessage" class="note"></p>
+<p id="employeeMessage" class="note" role="status"></p>
 
 <button type="button" onclick="retourAccueil()">
-  Retour
+  Retour à l'accueil
 </button>
 
   </section></main><footer>
   © CONGO ONE SERVICES SARL
   <br>
   COP MANAGEMENT
-</footer><script>
-function ouvrirConnexion(type) {
-  document.getElementById("accueil").hidden = true;
+  <br>
+  Votre sécurité, notre priorité.
+</footer><!-- FONCTIONS DE NAVIGATION --><script>
+  function ouvrirConnexion(type) {
 
-  document.getElementById("connexion-gerant").hidden =
-    type !== "gerant";
+    document.getElementById("accueil").hidden = true;
 
-  document.getElementById("connexion-employe").hidden =
-    type !== "employe";
-}
+    document.getElementById("connexion-gerant").hidden =
+      type !== "gerant";
 
-function retourAccueil() {
-  document.getElementById("accueil").hidden = false;
-  document.getElementById("connexion-gerant").hidden = true;
-  document.getElementById("connexion-employe").hidden = true;
-}
-</script></body>
+    document.getElementById("connexion-employe").hidden =
+      type !== "employe";
+
+  }
+
+  function retourAccueil() {
+
+    document.getElementById("accueil").hidden = false;
+
+    document.getElementById("connexion-gerant").hidden = true;
+
+    document.getElementById("connexion-employe").hidden = true;
+
+  }
+</script><!-- CONNEXION FIREBASE --><script type="module" src="app.js"></script></body>
 </html>
