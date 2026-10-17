@@ -1,4 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 
 import {
   getAuth,
@@ -26,9 +28,14 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+
+// =====================================
 // CONNEXION DU GÉRANT
+// =====================================
+
 document.querySelector("#adminLoginForm")
 .addEventListener("submit", async (e) => {
+
   e.preventDefault();
 
   const message = document.querySelector("#adminMessage");
@@ -38,13 +45,22 @@ document.querySelector("#adminLoginForm")
   message.textContent = "Connexion en cours...";
 
   try {
-    const result = await signInWithEmailAndPassword(auth, email, password);
 
-    const userDoc = await getDoc(doc(db, "users", result.user.uid));
+    const result = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    const userDoc = await getDoc(
+      doc(db, "users", result.user.uid)
+    );
 
     if (!userDoc.exists()) {
+
       await signOut(auth);
-      message.textContent = "ERREUR : aucun profil trouvé pour cet UID : " + result.user.uid;
+
+      message.textContent = "Profil administrateur introuvable.";
       return;
     }
 
@@ -53,62 +69,146 @@ document.querySelector("#adminLoginForm")
       .toLowerCase();
 
     if (role !== "admin") {
+
       await signOut(auth);
-      message.textContent = "ERREUR : rôle détecté = [" + role + "]";
+
+      message.textContent = "Accès refusé : compte non administrateur.";
       return;
     }
 
-    message.textContent = "Connexion réussie. Bienvenue dans votre espace gérant !";
+    message.textContent =
+      "Connexion réussie. Bienvenue dans votre espace gérant !";
 
   } catch (error) {
+
     console.error("Erreur administrateur :", error);
+
     message.textContent = "Erreur Firebase : " + error.code;
   }
+
 });
 
-// CONNEXION EMPLOYÉ
+
+// =====================================
+// CONNEXION DES EMPLOYÉS PAR MATRICULE
+// =====================================
+
 document.querySelector("#employeeLoginForm")
 .addEventListener("submit", async (e) => {
+
   e.preventDefault();
 
   const message = document.querySelector("#employeeMessage");
-  const email = document.querySelector("#employeeEmail").value.trim();
-  const password = document.querySelector("#employeePassword").value;
 
-  message.textContent = "Connexion en cours...";
+  const matricule = document
+    .querySelector("#employeeMatricule")
+    .value
+    .trim()
+    .toUpperCase();
+
+  const password = document
+    .querySelector("#employeePassword")
+    .value;
+
+  message.textContent = "Vérification du matricule...";
+
+  // Vérification du format COP0001
+
+  if (!/^COP\d{4}$/.test(matricule)) {
+
+    message.textContent =
+      "Matricule invalide. Exemple attendu : COP0001";
+
+    return;
+  }
+
+  // Identifiant technique interne Firebase
+  // L'employé saisit uniquement son matricule.
+
+  const emailTechnique =
+    matricule.toLowerCase() + "@cop-management.app";
 
   try {
-    const result = await signInWithEmailAndPassword(auth, email, password);
 
-    const userDoc = await getDoc(doc(db, "users", result.user.uid));
+    message.textContent = "Connexion en cours...";
+
+    const result = await signInWithEmailAndPassword(
+      auth,
+      emailTechnique,
+      password
+    );
+
+    const userDoc = await getDoc(
+      doc(db, "users", result.user.uid)
+    );
 
     if (!userDoc.exists()) {
+
       await signOut(auth);
+
       message.textContent = "Profil employé introuvable.";
       return;
     }
 
-    const role = String(userDoc.data().role || "")
+    const userData = userDoc.data();
+
+    const role = String(userData.role || "")
       .trim()
       .toLowerCase();
 
-    if (role !== "employee") {
+    const matriculeEnregistre = String(
+      userData.matricule || ""
+    ).trim().toUpperCase();
+
+    if (role !== "employee" ||
+        matriculeEnregistre !== matricule) {
+
       await signOut(auth);
-      message.textContent = "Accès refusé : ce compte n'est pas un compte employé.";
+
+      message.textContent =
+        "Accès refusé : matricule ou profil non reconnu.";
+
       return;
     }
 
-    message.textContent = "Connexion réussie. Bienvenue dans COP MANAGEMENT !";
+    message.textContent =
+      "Connexion réussie. Bienvenue dans COP MANAGEMENT !";
 
   } catch (error) {
+
     console.error("Erreur employé :", error);
-    message.textContent = "Erreur Firebase : " + error.code;
+
+    if (
+      error.code === "auth/invalid-credential" ||
+      error.code === "auth/user-not-found" ||
+      error.code === "auth/wrong-password"
+    ) {
+
+      message.textContent =
+        "Matricule ou mot de passe incorrect.";
+
+    } else {
+
+      message.textContent =
+        "Erreur Firebase : " + error.code;
+    }
   }
+
 });
 
+
+// =====================================
 // SERVICE WORKER
+// =====================================
+
 if ("serviceWorker" in navigator) {
+
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js").catch(console.error);
+
+    navigator.serviceWorker
+      .register("./sw.js")
+      .catch(console.error);
+
   });
+
 }
