@@ -1,1 +1,96 @@
-const key="cop_staff_demo";const f=document.querySelector("#f"),list=document.querySelector("#list"),count=document.querySelector("#count");function get(){try{return JSON.parse(localStorage.getItem(key)||"[]")}catch{return []}}function draw(){let a=get();count.textContent=a.length;list.replaceChildren();if(!a.length){list.textContent="Aucun employé pour le moment.";return}a.forEach(x=>{let d=document.createElement("div");d.className="person";let b=document.createElement("b");b.textContent=x.n;let s=document.createElement("small");s.textContent=x.r+" · "+(x.t||"Téléphone non renseigné");d.append(b,s);list.append(d)})}f.addEventListener("submit",e=>{e.preventDefault();let a=get();a.push({n:document.querySelector("#n").value.trim(),r:document.querySelector("#r").value,t:document.querySelector("#t").value.trim()});localStorage.setItem(key,JSON.stringify(a));f.reset();draw()});draw();if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+// CONFIGURATION FIREBASE
+const firebaseConfig = {
+  apiKey: "AIzaSyDzmREE5X1wIOLkUBTJLnfFLBThFfrBhSU",
+  authDomain: "cop-management.firebaseapp.com",
+  projectId: "cop-management",
+  storageBucket: "cop-management.firebasestorage.app",
+  messagingSenderId: "602152027077",
+  appId: "1:602152027077:web:2631e9e9eb9fb4feb381ac",
+  measurementId: "G-9M2MGHRC9V"
+};
+
+// INITIALISATION
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// CONNEXION GÉRANT
+document.querySelector("#adminLoginForm")
+.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const message = document.querySelector("#adminMessage");
+  const email = document.querySelector("#adminEmail").value.trim();
+  const password = document.querySelector("#adminPassword").value;
+
+  message.textContent = "Connexion en cours...";
+
+  try {
+    const result = await signInWithEmailAndPassword(auth, email, password);
+
+    const userDoc = await getDoc(doc(db, "users", result.user.uid));
+
+    if (!userDoc.exists() || userDoc.data().role !== "admin") {
+      await signOut(auth);
+      message.textContent = "Accès refusé : compte administrateur non autorisé.";
+      return;
+    }
+
+    message.textContent = "Connexion réussie. Bienvenue dans votre espace gérant !";
+
+  } catch (error) {
+    message.textContent = "Erreur de connexion. Vérifiez votre adresse e-mail et votre mot de passe.";
+    console.error(error);
+  }
+});
+
+// CONNEXION EMPLOYÉ
+document.querySelector("#employeeLoginForm")
+.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const message = document.querySelector("#employeeMessage");
+  const email = document.querySelector("#employeeEmail").value.trim();
+  const password = document.querySelector("#employeePassword").value;
+
+  message.textContent = "Connexion en cours...";
+
+  try {
+    const result = await signInWithEmailAndPassword(auth, email, password);
+
+    const userDoc = await getDoc(doc(db, "users", result.user.uid));
+
+    if (!userDoc.exists() || userDoc.data().role !== "employee") {
+      await signOut(auth);
+      message.textContent = "Accès refusé : compte employé non autorisé.";
+      return;
+    }
+
+    message.textContent = "Connexion réussie. Bienvenue dans COP MANAGEMENT !";
+
+  } catch (error) {
+    message.textContent = "Erreur de connexion. Vérifiez vos identifiants.";
+    console.error(error);
+  }
+});
+
+// SERVICE WORKER
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(console.error);
+  });
+}
