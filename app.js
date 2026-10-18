@@ -833,6 +833,8 @@ if (scheduleForm) {
         throw new Error("Matricule invalide. Exemple : COP0001.");
       }
       if (!dateService) throw new Error("Choisissez la date du lundi de la semaine.");
+      const dateChoisie = new Date(dateService + "T12:00:00");
+      if (dateChoisie.getDay() !== 1) throw new Error("La date choisie doit être un lundi.");
       if (!choixJours.length) throw new Error("Choisissez au moins un horaire ou statut dans le tableau.");
       if (choixJours.some(item => ["Jour", "Nuit", "24h", "48h"].includes(item.statut)) && !site) {
         throw new Error("Indiquez le site de service pour les jours travaillés.");
