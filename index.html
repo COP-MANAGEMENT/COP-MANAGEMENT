@@ -392,32 +392,42 @@
   <!-- MODULE HORAIRES -->
   <section id="module-horaires" class="module card" hidden>
     <h2>Gestion des horaires</h2>
-
-    <label>Matricule de l'agent
-      <input type="text" placeholder="COP0001">
-    </label>
-
-    <label>Date de service
-      <input type="date">
-    </label>
-
-    <label>Heure de début
-      <input type="time">
-    </label>
-
-    <label>Heure de fin
-      <input type="time">
-    </label>
-
-    <label>Type de service
-      <select>
-        <option value="">Sélectionner</option>
-        <option>Jour</option>
-        <option>Nuit</option>
-        <option>Rotation</option>
-      </select>
-    </label>
-
+    <p>Enregistrez le planning d'un agent. Il sera visible dans son espace employé.</p>
+    <form id="scheduleForm">
+      <label>Matricule de l'agent
+        <input id="scheduleMatricule" type="text" placeholder="COP0001" pattern="COP[0-9]{4}" required>
+      </label>
+      <label>Date de service
+        <input id="scheduleDate" type="date" required>
+      </label>
+      <label>Heure de début
+        <input id="scheduleStart" type="time" required>
+      </label>
+      <label>Heure de fin
+        <input id="scheduleEnd" type="time" required>
+      </label>
+      <label>Type de service
+        <select id="scheduleType" required>
+          <option value="">Sélectionner</option>
+          <option>Jour</option>
+          <option>Nuit</option>
+          <option>Rotation</option>
+        </select>
+      </label>
+      <label>Site de service
+        <input id="scheduleSite" type="text" placeholder="Nom du site" required>
+      </label>
+      <label>Consignes
+        <textarea id="scheduleInstructions" rows="3" placeholder="Consignes facultatives"></textarea>
+      </label>
+      <button type="submit">Enregistrer l'horaire</button>
+      <p id="scheduleMessage" class="note" role="status"></p>
+    </form>
+    <div class="card">
+      <h3>Horaires enregistrés</h3>
+      <p id="scheduleListMessage" class="note">Chargement...</p>
+      <div id="scheduleItems"></div>
+    </div>
     <button type="button" onclick="retourModules()">Retour au tableau de bord</button>
   </section>
 
@@ -622,7 +632,9 @@
 
       <div>
         <h3>🕒 Mes horaires</h3>
-        <p>Consulter mon planning.</p>
+        <p>Consulter mon planning de service.</p>
+        <p id="employeeScheduleMessage" class="note">Connectez-vous pour consulter vos horaires.</p>
+        <div id="employeeScheduleItems"></div>
       </div>
 
       <div>
