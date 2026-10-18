@@ -358,27 +358,34 @@
   <!-- MODULE AFFECTATIONS -->
   <section id="module-affectations" class="module card" hidden>
     <h2>Affectations des agents</h2>
-
-    <label>Nom du site
-      <input type="text" placeholder="Nom du site">
-    </label>
-
-    <label>Adresse du site
-      <input type="text" placeholder="Adresse du site">
-    </label>
-
-    <label>Matricule de l'agent
-      <input type="text" placeholder="COP0001">
-    </label>
-
-    <label>Poste affecté
-      <input type="text" placeholder="Poste de garde">
-    </label>
-
-    <label>Date d'affectation
-      <input type="date">
-    </label>
-
+    <p>Enregistrez le site et le poste de chaque agent. L'affectation sera visible dans son espace employé.</p>
+    <form id="assignmentForm">
+      <label>Nom du site
+        <input id="assignmentSite" type="text" placeholder="Nom du site" required>
+      </label>
+      <label>Adresse du site
+        <input id="assignmentAddress" type="text" placeholder="Adresse du site" required>
+      </label>
+      <label>Matricule de l'agent
+        <input id="assignmentMatricule" type="text" placeholder="COP0001" pattern="COP[0-9]{4}" required>
+      </label>
+      <label>Poste affecté
+        <input id="assignmentPosition" type="text" placeholder="Poste de garde" required>
+      </label>
+      <label>Date d'affectation
+        <input id="assignmentDate" type="date" required>
+      </label>
+      <label>Consignes particulières
+        <textarea id="assignmentInstructions" rows="3" placeholder="Consignes (facultatif)"></textarea>
+      </label>
+      <button type="submit">Enregistrer l'affectation</button>
+      <p id="assignmentMessage" class="note" role="status"></p>
+    </form>
+    <div class="card">
+      <h3>Affectations enregistrées</h3>
+      <p id="assignmentListMessage" class="note">Chargement...</p>
+      <div id="assignmentItems"></div>
+    </div>
     <button type="button" onclick="retourModules()">Retour au tableau de bord</button>
   </section>
 
@@ -609,6 +616,8 @@
       <div>
         <h3>📍 Mes affectations</h3>
         <p>Consulter mes lieux de travail.</p>
+        <p id="employeeAssignmentMessage" class="note">Connectez-vous pour consulter vos affectations.</p>
+        <div id="employeeAssignmentItems"></div>
       </div>
 
       <div>
