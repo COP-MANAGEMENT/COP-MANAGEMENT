@@ -58,3 +58,9 @@
 .public-contact-info{background:#f4f5f6;border-left:4px solid #a64036;border-radius:8px;padding:10px 14px;margin:14px 0}
 .public-contact-info p{margin:7px 0;line-height:1.5}
 .public-contact-info a{color:#30363b;font-weight:700}
+
+/* Accès direct aux services depuis l’en-tête */
+.header-services-link{margin-left:auto;display:inline-flex;align-items:center;gap:8px;padding:10px 15px;border:1px solid #f2c230;border-radius:8px;color:#fff;text-decoration:none;font-size:14px;font-weight:700;white-space:nowrap;transition:background .2s,color .2s}
+.header-services-link:hover,.header-services-link:focus{background:#f2c230;color:#30363b;outline:none}
+#services{scroll-margin-top:18px}
+@media(max-width:600px){.header-services-link{width:100%;justify-content:center;margin:2px 0 0}}
