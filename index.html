@@ -111,6 +111,7 @@
     <p>Enregistrement et suivi des agents de CONGO ONE SERVICES.</p>
 
     <form id="employeeForm">
+
       <label>Nom
         <input type="text" id="employeeNom" required>
       </label>
@@ -147,6 +148,23 @@
         <input type="email" id="employeeEmail">
       </label>
 
+      <!-- NOUVEAU CHAMP MOT DE PASSE -->
+      <label>Mot de passe initial de l'employé
+        <input
+          type="password"
+          id="employeeInitialPassword"
+          minlength="6"
+          autocomplete="new-password"
+          placeholder="Minimum 6 caractères"
+          required
+        >
+      </label>
+
+      <p class="note">
+        Ce mot de passe permettra à l'employé de se connecter avec son matricule.
+        Communiquez-le-lui de manière confidentielle.
+      </p>
+
       <label>Fonction
         <input type="text" id="employeeFonction" required>
       </label>
@@ -172,6 +190,7 @@
           <option value="Suspendu">Suspendu</option>
         </select>
       </label>
+
     </form>
 
     <p class="note">
@@ -541,4 +560,4 @@ function retourModules() {
 <script type="module" src="app.js"></script>
 
 </body>
-</html>
+  </html>
