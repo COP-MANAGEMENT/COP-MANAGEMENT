@@ -777,7 +777,7 @@ if (scheduleForm) {
       const site = document.querySelector("#scheduleSite").value.trim();
       const consignes = document.querySelector("#scheduleInstructions").value.trim();
 
-      if (!/^COP\\d{4}$/.test(matricule)) {
+      if (!/^COP\d{4}$/.test(matricule)) {
         throw new Error("Matricule invalide. Exemple : COP0001.");
       }
       if (heureFin <= heureDebut && typeService !== "Nuit") {
