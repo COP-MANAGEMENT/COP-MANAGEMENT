@@ -19,6 +19,7 @@ import {
   where,
   setDoc,
   deleteDoc,
+  writeBatch,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
@@ -348,6 +349,7 @@ if (employeeForm) {
       const email = document.querySelector("#employeeEmail").value.trim();
       const motDePasse = document.querySelector("#employeeInitialPassword").value;
       const fonction = document.querySelector("#employeeFonction").value.trim();
+      const direction = document.querySelector("#employeeDirection").value.trim();
       const engagement = document.querySelector("#employeeEngagement").value;
       const contrat = document.querySelector("#employeeContrat").value;
       const statut = document.querySelector("#employeeStatut").value;
@@ -402,6 +404,7 @@ if (employeeForm) {
           adresse,
           email,
           fonction,
+          direction,
           dateEngagement: engagement,
           typeContrat: contrat,
           statut,
@@ -774,36 +777,77 @@ async function afficherAffectationsEmploye(uid) {
 }
 
 
-// MODULE HORAIRES : ENREGISTREMENT ET CONSULTATION
+// MODULE HORAIRES : PLANNING MENSUEL
 const scheduleForm = document.querySelector("#scheduleForm");
+const scheduleMonthInput = document.querySelector("#scheduleMonth");
+const scheduleCalendar = document.querySelector("#scheduleCalendar");
+
+function creerTableauPlanningMensuel() {
+  if (!scheduleMonthInput || !scheduleCalendar) return;
+  const monthKey = scheduleMonthInput.value;
+  scheduleCalendar.replaceChildren();
+  if (!/^\d{4}-\d{2}$/.test(monthKey)) return;
+  const [year, month] = monthKey.split("-").map(Number);
+  const numberOfDays = new Date(year, month, 0).getDate();
+  const table = document.createElement("table");
+  const head = document.createElement("thead");
+  const headRow = document.createElement("tr");
+  ["Date", "Jour", "Horaire / statut"].forEach(label => {
+    const th = document.createElement("th");
+    th.textContent = label;
+    headRow.appendChild(th);
+  });
+  head.appendChild(headRow);
+  table.appendChild(head);
+  const body = document.createElement("tbody");
+  const options = [["","Sélectionner"],["Jour","Jour"],["Nuit","Nuit"],["24h","Service 24h"],["48h","Service 48h"],["Repos / Off","Repos / Off"]];
+  for (let day = 1; day <= numberOfDays; day++) {
+    const date = monthKey + "-" + String(day).padStart(2,"0");
+    const localDate = new Date(year, month - 1, day);
+    const row = document.createElement("tr");
+    const dateCell = document.createElement("td");
+    dateCell.textContent = String(day).padStart(2,"0") + "/" + String(month).padStart(2,"0") + "/" + year;
+    const weekdayCell = document.createElement("td");
+    weekdayCell.textContent = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"][localDate.getDay()];
+    const selectCell = document.createElement("td");
+    const select = document.createElement("select");
+    select.className = "schedule-day-choice";
+    select.dataset.date = date;
+    options.forEach(([value,label]) => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = label;
+      select.appendChild(option);
+    });
+    selectCell.appendChild(select);
+    row.append(dateCell,weekdayCell,selectCell);
+    body.appendChild(row);
+  }
+  table.appendChild(body);
+  scheduleCalendar.appendChild(table);
+}
+if (scheduleMonthInput) scheduleMonthInput.addEventListener("change",creerTableauPlanningMensuel);
 
 function creerCarteHoraire(horaire) {
   const card = document.createElement("article");
   card.className = "person";
   const title = document.createElement("strong");
-  title.textContent = (horaire.dateService || "Date non précisée") +
-    " — " + (horaire.matricule || "") + " — " + (horaire.site || "Site non précisé");
+  title.textContent = (horaire.monthKey || horaire.dateService || "Mois non précisé") + " — " + (horaire.matricule || "") + " — " + (horaire.site || "Site non précisé");
   const details = document.createElement("p");
-  if (Array.isArray(horaire.jours)) {
-    details.textContent = "Planning hebdomadaire :";
-    const table = document.createElement("table");
-    const body = document.createElement("tbody");
-    horaire.jours.forEach(item => {
-      const row = document.createElement("tr");
-      const day = document.createElement("td");
-      const status = document.createElement("td");
-      day.textContent = item.jour;
-      status.textContent = item.statut;
-      row.append(day, status);
-      body.appendChild(row);
-    });
-    table.appendChild(body);
-    card.append(title, details, table);
-  } else {
-    details.textContent = "Service : " + (horaire.typeService || "—") +
-      (horaire.heureDebut || horaire.heureFin ? " | De " + (horaire.heureDebut || "—") + " à " + (horaire.heureFin || "—") : "");
-    card.append(title, details);
-  }
+  details.textContent = "Planning mensuel";
+  const table = document.createElement("table");
+  const body = document.createElement("tbody");
+  (Array.isArray(horaire.jours) ? horaire.jours : []).forEach(item => {
+    const row = document.createElement("tr");
+    const date = document.createElement("td");
+    const status = document.createElement("td");
+    date.textContent = item.date || item.jour || "";
+    status.textContent = item.statut || "";
+    row.append(date,status);
+    body.appendChild(row);
+  });
+  table.appendChild(body);
+  card.append(title,details,table);
   if (horaire.consignes) {
     const note = document.createElement("p");
     note.textContent = "Consignes : " + horaire.consignes;
@@ -813,7 +857,7 @@ function creerCarteHoraire(horaire) {
 }
 
 if (scheduleForm) {
-  scheduleForm.addEventListener("submit", async (event) => {
+  scheduleForm.addEventListener("submit",async event => {
     event.preventDefault();
     const button = scheduleForm.querySelector('button[type="submit"]');
     const message = document.querySelector("#scheduleMessage");
@@ -822,50 +866,30 @@ if (scheduleForm) {
     try {
       await verifierAdministrateur();
       const matricule = document.querySelector("#scheduleMatricule").value.trim().toUpperCase();
-      const dateService = document.querySelector("#scheduleWeekStart").value;
+      const monthKey = scheduleMonthInput.value;
       const site = document.querySelector("#scheduleSite").value.trim();
       const consignes = document.querySelector("#scheduleInstructions").value.trim();
-      const choixJours = [...document.querySelectorAll(".schedule-day-choice")]
-        .map(select => ({ jour: select.dataset.day, statut: select.value }))
+      const jours = [...document.querySelectorAll(".schedule-day-choice")]
+        .map(select => ({date:select.dataset.date,statut:select.value}))
         .filter(item => item.statut);
-
-      if (!/^COP\\d{4}$/.test(matricule)) {
-        throw new Error("Matricule invalide. Exemple : COP0001.");
-      }
-      if (!dateService) throw new Error("Choisissez la date du lundi de la semaine.");
-      const dateChoisie = new Date(dateService + "T12:00:00");
-      if (dateChoisie.getDay() !== 1) throw new Error("La date choisie doit être un lundi.");
-      if (!choixJours.length) throw new Error("Choisissez au moins un horaire ou statut dans le tableau.");
-      if (choixJours.some(item => ["Jour", "Nuit", "24h", "48h"].includes(item.statut)) && !site) {
-        throw new Error("Indiquez le site de service pour les jours travaillés.");
-      }
-
+      if (!/^COP\d{4}$/.test(matricule)) throw new Error("Matricule invalide. Exemple : COP0001.");
+      if (!/^\d{4}-\d{2}$/.test(monthKey)) throw new Error("Choisissez le mois du planning.");
+      if (!jours.length) throw new Error("Choisissez au moins un horaire ou statut dans le tableau mensuel.");
+      if (jours.some(item => ["Jour","Nuit","24h","48h"].includes(item.statut)) && !site) throw new Error("Indiquez le site de service pour les jours travaillés.");
       const employee = await trouverEmployeParMatricule(matricule);
-      if (!employee || !employee.employeeUid) {
-        throw new Error("Aucun compte employé ne correspond à ce matricule.");
-      }
-
-      await addDoc(collection(db, "schedules"), {
-        matricule,
-        dateService,
-        typeService: "Planning hebdomadaire",
-        jours: choixJours,
-        site,
-        consignes,
-        employeeUid: employee.employeeUid,
-        employeeId: employee.id,
-        createdAt: serverTimestamp(),
-        createdBy: auth.currentUser.uid
+      if (!employee || !employee.employeeUid) throw new Error("Aucun compte employé ne correspond à ce matricule.");
+      await setDoc(doc(db,"schedules",matricule + "_" + monthKey),{
+        matricule,monthKey,dateService:monthKey + "-01",typeService:"Planning mensuel",jours,site,consignes,
+        employeeUid:employee.employeeUid,employeeId:employee.id,updatedAt:serverTimestamp(),createdBy:auth.currentUser.uid
       });
       scheduleForm.reset();
-      message.textContent = "Planning hebdomadaire enregistré. Il est visible dans l'espace de l'employé.";
+      scheduleCalendar.replaceChildren();
+      message.textContent = "Planning mensuel enregistré. Il est visible dans l'espace de l'employé.";
       await afficherHorairesAdmin();
-    } catch (error) {
-      console.error("Erreur horaire :", error);
+    } catch(error) {
+      console.error("Erreur planning mensuel :",error);
       message.textContent = "Enregistrement impossible : " + (error.message || error.code);
-    } finally {
-      button.disabled = false;
-    }
+    } finally { button.disabled = false; }
   });
 }
 
@@ -873,23 +897,20 @@ async function afficherHorairesAdmin() {
   const message = document.querySelector("#scheduleListMessage");
   const items = document.querySelector("#scheduleItems");
   if (!message || !items || !auth.currentUser) return;
-  message.textContent = "Chargement des horaires...";
+  message.textContent = "Chargement des plannings...";
   items.replaceChildren();
   try {
     await verifierAdministrateur();
-    const snapshot = await getDocs(collection(db, "schedules"));
-    if (snapshot.empty) {
-      message.textContent = "Aucun horaire enregistré pour le moment.";
-      return;
-    }
+    const snapshot = await getDocs(collection(db,"schedules"));
+    if (snapshot.empty) { message.textContent = "Aucun planning enregistré pour le moment."; return; }
     const records = [];
     snapshot.forEach(item => records.push(item.data()));
-    records.sort((a, b) => String(a.dateService || "").localeCompare(String(b.dateService || "")));
+    records.sort((a,b) => String(a.monthKey || a.dateService || "").localeCompare(String(b.monthKey || b.dateService || "")));
     records.forEach(record => items.appendChild(creerCarteHoraire(record)));
-    message.textContent = records.length + " horaire(s) enregistré(s).";
-  } catch (error) {
-    console.error("Erreur lecture horaires gérant :", error);
-    message.textContent = "Chargement impossible : " + error.code;
+    message.textContent = records.length + " planning(s) enregistré(s).";
+  } catch(error) {
+    console.error("Erreur lecture plannings gérant :",error);
+    message.textContent = "Chargement impossible : " + (error.message || error.code);
   }
 }
 
@@ -897,26 +918,133 @@ async function afficherHorairesEmploye(uid) {
   const message = document.querySelector("#employeeScheduleMessage");
   const items = document.querySelector("#employeeScheduleItems");
   if (!message || !items) return;
-  message.textContent = "Chargement de vos horaires...";
+  message.textContent = "Chargement de vos plannings...";
   items.replaceChildren();
   try {
-    const q = query(collection(db, "schedules"), where("employeeUid", "==", uid));
-    const snapshot = await getDocs(q);
-    if (snapshot.empty) {
-      message.textContent = "Aucun horaire ne vous a encore été attribué.";
-      return;
-    }
+    const snapshot = await getDocs(query(collection(db,"schedules"),where("employeeUid","==",uid)));
+    if (snapshot.empty) { message.textContent = "Aucun planning ne vous a encore été attribué."; return; }
     const records = [];
     snapshot.forEach(item => records.push(item.data()));
-    records.sort((a, b) => String(a.dateService || "").localeCompare(String(b.dateService || "")));
+    records.sort((a,b) => String(a.monthKey || a.dateService || "").localeCompare(String(b.monthKey || b.dateService || "")));
     records.forEach(record => items.appendChild(creerCarteHoraire(record)));
-    message.textContent = records.length + " horaire(s) disponible(s).";
-  } catch (error) {
-    console.error("Erreur lecture horaires employé :", error);
-    message.textContent = "Impossible de charger vos horaires : " + error.code;
+    message.textContent = records.length + " planning(s) disponible(s).";
+  } catch(error) {
+    console.error("Erreur lecture plannings employé :",error);
+    message.textContent = "Impossible de charger vos plannings : " + (error.message || error.code);
   }
 }
 
+
+// POINTAGE MENSUEL DES AGENTS
+const attendanceMonthInput = document.querySelector("#attendanceMonth");
+const attendanceTable = document.querySelector("#attendanceTable");
+const attendanceMessage = document.querySelector("#attendanceMessage");
+const saveAttendanceButton = document.querySelector("#saveAttendanceButton");
+
+async function chargerTableauPointage() {
+  if (!attendanceMonthInput || !attendanceTable || !attendanceMessage) return;
+  const monthKey = attendanceMonthInput.value;
+  attendanceTable.replaceChildren();
+  if (!/^\d{4}-\d{2}$/.test(monthKey)) {
+    attendanceMessage.textContent = "Choisissez un mois pour afficher le tableau de pointage.";
+    return;
+  }
+  attendanceMessage.textContent = "Chargement des agents et du pointage...";
+  try {
+    const [employeesSnapshot,attendanceSnapshot] = await Promise.all([
+      getDocs(collection(db,"employees")),
+      getDocs(query(collection(db,"attendance"),where("monthKey","==",monthKey)))
+    ]);
+    const employees = [];
+    employeesSnapshot.forEach(item => employees.push({id:item.id,...item.data()}));
+    employees.sort((a,b) => String(a.matricule || "").localeCompare(String(b.matricule || "")));
+    if (!employees.length) { attendanceMessage.textContent = "Aucun employé enregistré."; return; }
+    const saved = new Map();
+    attendanceSnapshot.forEach(item => {
+      const data = item.data();
+      saved.set(data.date + "_" + data.matricule,data);
+    });
+    const [year,month] = monthKey.split("-").map(Number);
+    const countDays = new Date(year,month,0).getDate();
+    const table = document.createElement("table");
+    const thead = document.createElement("thead");
+    const header = document.createElement("tr");
+    ["N°","Date","Nom complet","Direction","Heure d'arrivée","Heure de sortie","Contact négatif","Matricule","Observation"].forEach(label => {
+      const th = document.createElement("th"); th.textContent = label; header.appendChild(th);
+    });
+    thead.appendChild(header); table.appendChild(thead);
+    const tbody = document.createElement("tbody");
+    for (let day=1; day<=countDays; day++) {
+      const date = monthKey + "-" + String(day).padStart(2,"0");
+      for (let index=0; index<employees.length; index++) {
+        const employee = employees[index];
+        const record = saved.get(date + "_" + employee.matricule) || {};
+        const row = document.createElement("tr");
+        const number = document.createElement("td"); number.textContent = String(index+1);
+        const dateCell = document.createElement("td"); dateCell.textContent = String(day).padStart(2,"0") + "/" + String(month).padStart(2,"0") + "/" + year;
+        const nameCell = document.createElement("td"); nameCell.textContent = [employee.nom,employee.postnom,employee.prenom].filter(Boolean).join(" ");
+        const directionCell = document.createElement("td"); directionCell.textContent = employee.direction || employee.fonction || "À préciser";
+        const matriculeCell = document.createElement("td"); matriculeCell.textContent = employee.matricule || "";
+        function fieldCell(field,type,value) {
+          const cell = document.createElement("td");
+          const input = document.createElement("input");
+          input.type = type; input.value = value || ""; input.dataset.field = field;
+          input.dataset.date = date; input.dataset.matricule = employee.matricule || "";
+          input.style.minWidth = type === "time" ? "105px" : "130px";
+          cell.appendChild(input); return cell;
+        }
+        row.append(number,dateCell,nameCell,directionCell,
+          fieldCell("heureArrivee","time",record.heureArrivee),
+          fieldCell("heureSortie","time",record.heureSortie),
+          fieldCell("contactNegatif","text",record.contactNegatif),
+          matriculeCell,fieldCell("observation","text",record.observation));
+        tbody.appendChild(row);
+      }
+    }
+    table.appendChild(tbody); attendanceTable.appendChild(table);
+    attendanceMessage.textContent = employees.length + " employé(s) — " + countDays + " jours — " + (employees.length*countDays) + " lignes de pointage.";
+  } catch(error) {
+    console.error("Erreur chargement pointage :",error);
+    attendanceMessage.textContent = "Chargement impossible : " + (error.message || error.code);
+  }
+}
+if (attendanceMonthInput) attendanceMonthInput.addEventListener("change",chargerTableauPointage);
+
+if (saveAttendanceButton) {
+  saveAttendanceButton.addEventListener("click",async () => {
+    saveAttendanceButton.disabled = true;
+    attendanceMessage.textContent = "Enregistrement du pointage en cours...";
+    try {
+      await verifierAdministrateur();
+      const monthKey = attendanceMonthInput.value;
+      if (!/^\d{4}-\d{2}$/.test(monthKey)) throw new Error("Choisissez d'abord le mois du pointage.");
+      const rows = [...attendanceTable.querySelectorAll("tbody tr")];
+      let batch = writeBatch(db), operations = 0, savedCount = 0;
+      for (const row of rows) {
+        const fields = [...row.querySelectorAll("input[data-field]")];
+        if (!fields.length) continue;
+        const data = {};
+        fields.forEach(input => { data[input.dataset.field] = input.value.trim(); });
+        if (!Object.values(data).some(Boolean)) continue;
+        const date = fields[0].dataset.date;
+        const matricule = fields[0].dataset.matricule;
+        const cells = row.querySelectorAll("td");
+        const docId = monthKey + "_" + date.slice(-2) + "_" + matricule;
+        batch.set(doc(db,"attendance",docId),{
+          monthKey,date,matricule,nomEmploye:cells[2].textContent,direction:cells[3].textContent,
+          ...data,updatedAt:serverTimestamp(),updatedBy:auth.currentUser.uid
+        },{merge:true});
+        operations++; savedCount++;
+        if (operations===450) { await batch.commit(); batch=writeBatch(db); operations=0; }
+      }
+      if (operations) await batch.commit();
+      attendanceMessage.textContent = savedCount + " ligne(s) enregistrée(s) pour " + monthKey + ".";
+    } catch(error) {
+      console.error("Erreur enregistrement pointage :",error);
+      attendanceMessage.textContent = "Enregistrement impossible : " + (error.message || error.code);
+    } finally { saveAttendanceButton.disabled = false; }
+  });
+}
 
 // MODULE RAPPORTS : ENVOI PAR L'EMPLOYE ET CONSULTATION PAR LE GERANT
 function creerCarteRapport(rapport) {
