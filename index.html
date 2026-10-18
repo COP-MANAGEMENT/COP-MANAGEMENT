@@ -620,7 +620,8 @@
       </div>
 
       <div>
-        <h3>📋 Mes rapports</h3>
+        <button type="button" onclick="ouvrirMesRapports()" aria-expanded="false" aria-controls="employeeReportsContent">📋 Mes rapports</button>
+        <div id="employeeReportsContent" hidden>
         <p>Envoyer un compte rendu de votre service au gérant.</p>
         <form id="employeeReportForm">
           <label>Site concerné
@@ -637,6 +638,7 @@
         </form>
         <h4>Mes rapports envoyés</h4>
         <div id="employeeReportItems"></div>
+        </div>
       </div>
 
       <div>
@@ -730,6 +732,17 @@ document.getElementById("recruitmentForm").addEventListener("submit", function(e
   document.getElementById("recruitmentFormMessage").textContent = "Votre messagerie va s’ouvrir. Joignez votre CV et vos pièces justificatives avant d’envoyer.";
   window.location.href = "mailto:copservicessarl@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
 });
+
+function ouvrirMesRapports() {
+  const contenu = document.getElementById("employeeReportsContent");
+  const bouton = document.querySelector('[aria-controls="employeeReportsContent"]');
+  if (!contenu || !bouton) return;
+  contenu.hidden = !contenu.hidden;
+  bouton.setAttribute("aria-expanded", String(!contenu.hidden));
+  if (!contenu.hidden) {
+    contenu.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+}
 
 function retourAccueil() {
 
