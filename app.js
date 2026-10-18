@@ -630,7 +630,7 @@ if (assignmentForm) {
       const dateAffectation = document.querySelector("#assignmentDate").value;
       const consignes = document.querySelector("#assignmentInstructions").value.trim();
 
-      if (!/^COP\\d{4}$/.test(matricule)) {
+      if (!/^COP\d{4}$/.test(matricule)) {
         throw new Error("Matricule invalide. Exemple : COP0001.");
       }
 
