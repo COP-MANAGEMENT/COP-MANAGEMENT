@@ -28,3 +28,18 @@
 .home-contact{padding:25px}
 @media(max-width:600px){.home-brand{align-items:flex-start;gap:14px}.home-logo{width:92px;height:105px}.home-hero{padding:20px}.home-lead{font-size:15px}.service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.brand-tag{width:100%;margin-left:76px;margin-top:-12px}}
 @media(max-width:380px){.service-grid{grid-template-columns:1fr}.home-brand{display:block}.home-logo{margin-bottom:16px}}
+
+.news-section,.public-form-section{margin-top:22px;padding:25px}
+.news-card{border-left:4px solid #c49b22;background:#f6f7f8;padding:17px 20px;border-radius:8px}
+.news-card small{font-size:11px;font-weight:700;letter-spacing:1px;color:#7b8288}
+.news-card h3{margin:8px 0;color:#30363b}
+.news-card p{line-height:1.6;color:#596168}
+.public-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
+.public-form label{display:flex;flex-direction:column;gap:7px;font-weight:600;color:#394149}
+.public-form input,.public-form select,.public-form textarea{width:100%;padding:12px;border:1px solid #cfd4d8;border-radius:8px;font:inherit;background:#fff}
+.public-form textarea{resize:vertical}
+.public-form label:has(textarea){grid-column:1/-1}
+.public-form button{grid-column:1/-1;justify-self:start;min-width:230px}
+.public-form .note{grid-column:1/-1}
+.home-contact a,footer a{color:inherit;font-weight:700}
+@media(max-width:600px){.public-form{grid-template-columns:1fr}.public-form label:has(textarea),.public-form button,.public-form .note{grid-column:1}.public-form-section,.news-section{padding:19px}}
