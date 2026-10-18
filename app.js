@@ -784,9 +784,26 @@ function creerCarteHoraire(horaire) {
   title.textContent = (horaire.dateService || "Date non précisée") +
     " — " + (horaire.matricule || "") + " — " + (horaire.site || "Site non précisé");
   const details = document.createElement("p");
-  details.textContent = "Service : " + (horaire.typeService || "—") +
-    " | De " + (horaire.heureDebut || "—") + " à " + (horaire.heureFin || "—");
-  card.append(title, details);
+  if (Array.isArray(horaire.jours)) {
+    details.textContent = "Planning hebdomadaire :";
+    const table = document.createElement("table");
+    const body = document.createElement("tbody");
+    horaire.jours.forEach(item => {
+      const row = document.createElement("tr");
+      const day = document.createElement("td");
+      const status = document.createElement("td");
+      day.textContent = item.jour;
+      status.textContent = item.statut;
+      row.append(day, status);
+      body.appendChild(row);
+    });
+    table.appendChild(body);
+    card.append(title, details, table);
+  } else {
+    details.textContent = "Service : " + (horaire.typeService || "—") +
+      (horaire.heureDebut || horaire.heureFin ? " | De " + (horaire.heureDebut || "—") + " à " + (horaire.heureFin || "—") : "");
+    card.append(title, details);
+  }
   if (horaire.consignes) {
     const note = document.createElement("p");
     note.textContent = "Consignes : " + horaire.consignes;
@@ -805,18 +822,20 @@ if (scheduleForm) {
     try {
       await verifierAdministrateur();
       const matricule = document.querySelector("#scheduleMatricule").value.trim().toUpperCase();
-      const dateService = document.querySelector("#scheduleDate").value;
-      const heureDebut = document.querySelector("#scheduleStart").value;
-      const heureFin = document.querySelector("#scheduleEnd").value;
-      const typeService = document.querySelector("#scheduleType").value;
+      const dateService = document.querySelector("#scheduleWeekStart").value;
       const site = document.querySelector("#scheduleSite").value.trim();
       const consignes = document.querySelector("#scheduleInstructions").value.trim();
+      const choixJours = [...document.querySelectorAll(".schedule-day-choice")]
+        .map(select => ({ jour: select.dataset.day, statut: select.value }))
+        .filter(item => item.statut);
 
-      if (!/^COP\d{4}$/.test(matricule)) {
+      if (!/^COP\\d{4}$/.test(matricule)) {
         throw new Error("Matricule invalide. Exemple : COP0001.");
       }
-      if (heureFin <= heureDebut && typeService !== "Nuit") {
-        throw new Error("Pour un service de jour ou en rotation, l'heure de fin doit être après l'heure de début. Choisissez Nuit si le service traverse minuit.");
+      if (!dateService) throw new Error("Choisissez la date du lundi de la semaine.");
+      if (!choixJours.length) throw new Error("Choisissez au moins un horaire ou statut dans le tableau.");
+      if (choixJours.some(item => ["Jour", "Nuit", "24h", "48h"].includes(item.statut)) && !site) {
+        throw new Error("Indiquez le site de service pour les jours travaillés.");
       }
 
       const employee = await trouverEmployeParMatricule(matricule);
@@ -827,9 +846,8 @@ if (scheduleForm) {
       await addDoc(collection(db, "schedules"), {
         matricule,
         dateService,
-        heureDebut,
-        heureFin,
-        typeService,
+        typeService: "Planning hebdomadaire",
+        jours: choixJours,
         site,
         consignes,
         employeeUid: employee.employeeUid,
@@ -838,7 +856,7 @@ if (scheduleForm) {
         createdBy: auth.currentUser.uid
       });
       scheduleForm.reset();
-      message.textContent = "Horaire enregistré. Il est maintenant visible dans l'espace de l'employé.";
+      message.textContent = "Planning hebdomadaire enregistré. Il est visible dans l'espace de l'employé.";
       await afficherHorairesAdmin();
     } catch (error) {
       console.error("Erreur horaire :", error);
