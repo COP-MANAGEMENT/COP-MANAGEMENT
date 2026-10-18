@@ -397,23 +397,25 @@
       <label>Matricule de l'agent
         <input id="scheduleMatricule" type="text" placeholder="COP0001" autocapitalize="characters" autocomplete="off" required>
       </label>
-      <label>Date de service
-        <input id="scheduleDate" type="date" required>
+      <label>Date du lundi (début de la semaine)
+        <input id="scheduleWeekStart" type="date" required>
       </label>
-      <label>Heure de début
-        <input id="scheduleStart" type="time" required>
-      </label>
-      <label>Heure de fin
-        <input id="scheduleEnd" type="time" required>
-      </label>
-      <label>Type de service
-        <select id="scheduleType" required>
-          <option value="">Sélectionner</option>
-          <option>Jour</option>
-          <option>Nuit</option>
-          <option>Rotation</option>
-        </select>
-      </label>
+      <h3>Planning de la semaine</h3>
+      <p>Choisissez une situation pour chaque jour. Laissez « Sélectionner » si le jour n'est pas encore défini.</p>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Jour</th><th>Horaire / statut</th></tr></thead>
+          <tbody>
+            <tr><td>Lundi</td><td><select class="schedule-day-choice" data-day="Lundi" aria-label="Lundi"><option value="">Sélectionner</option><option value="Jour">Jour</option><option value="Nuit">Nuit</option><option value="24h">Service 24h</option><option value="48h">Service 48h</option><option value="Repos / Off">Repos / Off</option></select></td></tr>
+            <tr><td>Mardi</td><td><select class="schedule-day-choice" data-day="Mardi" aria-label="Mardi"><option value="">Sélectionner</option><option value="Jour">Jour</option><option value="Nuit">Nuit</option><option value="24h">Service 24h</option><option value="48h">Service 48h</option><option value="Repos / Off">Repos / Off</option></select></td></tr>
+            <tr><td>Mercredi</td><td><select class="schedule-day-choice" data-day="Mercredi" aria-label="Mercredi"><option value="">Sélectionner</option><option value="Jour">Jour</option><option value="Nuit">Nuit</option><option value="24h">Service 24h</option><option value="48h">Service 48h</option><option value="Repos / Off">Repos / Off</option></select></td></tr>
+            <tr><td>Jeudi</td><td><select class="schedule-day-choice" data-day="Jeudi" aria-label="Jeudi"><option value="">Sélectionner</option><option value="Jour">Jour</option><option value="Nuit">Nuit</option><option value="24h">Service 24h</option><option value="48h">Service 48h</option><option value="Repos / Off">Repos / Off</option></select></td></tr>
+            <tr><td>Vendredi</td><td><select class="schedule-day-choice" data-day="Vendredi" aria-label="Vendredi"><option value="">Sélectionner</option><option value="Jour">Jour</option><option value="Nuit">Nuit</option><option value="24h">Service 24h</option><option value="48h">Service 48h</option><option value="Repos / Off">Repos / Off</option></select></td></tr>
+            <tr><td>Samedi</td><td><select class="schedule-day-choice" data-day="Samedi" aria-label="Samedi"><option value="">Sélectionner</option><option value="Jour">Jour</option><option value="Nuit">Nuit</option><option value="24h">Service 24h</option><option value="48h">Service 48h</option><option value="Repos / Off">Repos / Off</option></select></td></tr>
+            <tr><td>Dimanche</td><td><select class="schedule-day-choice" data-day="Dimanche" aria-label="Dimanche"><option value="">Sélectionner</option><option value="Jour">Jour</option><option value="Nuit">Nuit</option><option value="24h">Service 24h</option><option value="48h">Service 48h</option><option value="Repos / Off">Repos / Off</option></select></td></tr>
+          </tbody>
+        </table>
+      </div>
       <label>Site de service
         <input id="scheduleSite" type="text" placeholder="Nom du site" required>
       </label>
