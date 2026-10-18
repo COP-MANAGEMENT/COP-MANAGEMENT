@@ -434,27 +434,9 @@
   <!-- MODULE RAPPORTS -->
   <section id="module-rapports" class="module card" hidden>
     <h2>Rapports d'activités</h2>
-
-    <label>Matricule de l'agent
-      <input type="text" placeholder="COP0001">
-    </label>
-
-    <label>Site concerné
-      <input type="text" placeholder="Nom du site">
-    </label>
-
-    <label>Date du rapport
-      <input type="date">
-    </label>
-
-    <label>Description du rapport
-      <textarea rows="5" placeholder="Décrire les activités et événements..."></textarea>
-    </label>
-
-    <label>Photo ou pièce jointe
-      <input type="file" accept="image/*,.pdf,.doc,.docx" capture="environment">
-    </label>
-
+    <p>Consultez les rapports transmis par les agents depuis leur espace employé.</p>
+    <p id="reportAdminMessage" class="note" role="status">Chargement des rapports...</p>
+    <div id="reportAdminItems"></div>
     <button type="button" onclick="retourModules()">Retour au tableau de bord</button>
   </section>
 
@@ -639,7 +621,22 @@
 
       <div>
         <h3>📋 Mes rapports</h3>
-        <p>Consulter mes rapports d'activité.</p>
+        <p>Envoyer un compte rendu de votre service au gérant.</p>
+        <form id="employeeReportForm">
+          <label>Site concerné
+            <input id="employeeReportSite" type="text" placeholder="Nom du site" required>
+          </label>
+          <label>Date du rapport
+            <input id="employeeReportDate" type="date" required>
+          </label>
+          <label>Compte rendu
+            <textarea id="employeeReportDescription" rows="5" minlength="10" placeholder="Décrivez votre service, les activités réalisées et les incidents éventuels..." required></textarea>
+          </label>
+          <button type="submit">Envoyer le rapport</button>
+          <p id="employeeReportMessage" class="note" role="status"></p>
+        </form>
+        <h4>Mes rapports envoyés</h4>
+        <div id="employeeReportItems"></div>
       </div>
 
       <div>
