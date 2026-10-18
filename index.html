@@ -21,17 +21,17 @@
   <span class="brand-tag">COP MANAGEMENT</span>
   <nav class="header-nav" aria-label="Navigation principale">
     <a href="services.html">Nos services</a>
-    <a href="#qui-sommes-nous">Qui sommes-nous</a>
-    <a href="#actualites">Actualités</a>
-    <a href="#contact">Comment nous contacter</a>
-    <a href="#recrutement">Carrières</a>
-    <a href="#nouveau-client">Espace client</a>
+    <a href="qui-sommes-nous.html">Qui sommes-nous</a>
+    <a href="actualites.html">Actualités</a>
+    <a href="contact.html">Comment nous contacter</a>
+    <a href="carrieres.html">Carrières</a>
+    <a href="espace-client.html">Espace client</a>
   </nav>
 </header>
 
 <main>
 
-<!-- ACCUEIL -->
+<!-- ACCUEIL : page d'accueil allégée -->
 <section id="accueil">
   <section class="home-hero">
     <div class="home-brand">
@@ -47,151 +47,6 @@
       <button type="button" class="button-secondary" onclick="ouvrirConnexion('employe')">Espace employé</button>
     </div>
   </section>
-
-  <section class="card company-intro" id="qui-sommes-nous">
-    <span class="eyebrow">QUI SOMMES-NOUS ?</span>
-    <h2>Bienvenue chez CONGO ONE SERVICES</h2>
-    <p>CONGO ONE SERVICES SARL est une société multiservices basée à Kinshasa, en République démocratique du Congo. Elle développe des prestations de sécurité et d’accompagnement opérationnel pour répondre aux besoins de ses clients.</p>
-    <p class="company-location"><strong>Siège social :</strong> Kinshasa, commune de Kalamu, RDC.</p>
-  </section>
-
-  <section class="card news-section" id="actualites">
-    <span class="eyebrow">ACTUALITÉ</span>
-    <h2>Actualités de COP</h2>
-    <article class="news-card">
-      <small>CONGO ONE SERVICES SARL · NOTRE ENGAGEMENT</small>
-      <h3>VOTRE SÉCURITÉ MÉRITE LE MEILLEUR !</h3>
-      <p>Chez CONGO ONE SERVICES, nous savons que la sécurité de vos biens, de vos collaborateurs et de vos proches est une priorité qui ne laisse aucune place à l’improvisation.</p>
-      <h4>Notre engagement repose sur quatre exigences :</h4>
-      <p><strong>Des agents qualifiés et formés :</strong> des équipes préparées à faire face aux différentes situations sur le terrain.</p>
-      <p><strong>Le professionnalisme :</strong> discipline, vigilance, ponctualité et respect des consignes.</p>
-      <p><strong>L’excellence :</strong> des prestations fiables, efficaces et adaptées à vos besoins.</p>
-      <p><strong>Un engagement sérieux :</strong> la volonté de protéger vos biens et vos intérêts et de mériter votre confiance.</p>
-      <p>Entreprises, institutions, commerces et particuliers : contactez-nous pour échanger sur vos besoins et étudier des solutions adaptées.</p>
-      <p><strong>Votre confiance est notre responsabilité. Votre satisfaction est notre engagement.</strong></p>
-      <p><strong>Téléphone / WhatsApp :</strong> <a href="https://wa.me/243816823390" target="_blank" rel="noopener">+243 816 823 390</a><br>
-      <strong>E-mail :</strong> <a href="mailto:copservicessarl@gmail.com">copservicessarl@gmail.com</a></p>
-      <p class="news-slogan"><strong>CONGO ONE SERVICES SARL</strong><br><em>Votre sécurité, notre priorité.</em></p>
-    </article>
-  </section>
-
-  <details class="card public-form-section public-accordion" id="nouveau-client">
-    <summary>
-      <span class="eyebrow">ESPACE CLIENT</span>
-      <strong>Vous êtes un nouveau client ?</strong>
-      <small> Cliquez ici pour afficher le formulaire et nos coordonnées.</small>
-    </summary>
-    <div class="accordion-content">
-      <p>Présentez-nous votre besoin. Votre demande sera préparée et envoyée directement à notre équipe via WhatsApp.</p>
-      <div class="public-contact-info">
-        <p><strong>Téléphone / WhatsApp :</strong> <a href="https://wa.me/243816823390" target="_blank" rel="noopener">+243 816 823 390</a></p>
-        <p><strong>E-mail :</strong> <a href="mailto:copservicessarl@gmail.com">copservicessarl@gmail.com</a></p>
-        <p><strong>Siège social :</strong> Kinshasa, commune de Kalamu, RDC.</p>
-      </div>
-    <form id="newClientForm" class="public-form">
-      <label>Nom de l’entreprise ou du client
-        <input id="clientName" type="text" required>
-      </label>
-      <label>Personne à contacter
-        <input id="clientContact" type="text" required>
-      </label>
-      <label>Téléphone
-        <input id="clientPhone" type="tel" placeholder="+243..." required>
-      </label>
-      <label>Adresse ou commune d’intervention
-        <input id="clientAddress" type="text" required>
-      </label>
-      <label>Service recherché
-        <select id="clientService" required>
-          <option value="">Sélectionner un service</option>
-          <option>Gardiennage et sécurité privée</option>
-          <option>Vidéosurveillance</option>
-          <option>Service incendie</option>
-          <option>Nettoyage et entretien</option>
-          <option>Chauffeur</option>
-          <option>Autres services</option>
-        </select>
-      </label>
-      <label>Décrivez votre besoin
-        <textarea id="clientNeed" rows="4" required></textarea>
-      </label>
-      <button type="submit">Envoyer ma demande par WhatsApp</button>
-      <p id="clientFormMessage" class="note" role="status"></p>
-    </form>
-    </div>
-  </details>
-
-  <details class="card public-form-section public-accordion" id="recrutement">
-    <summary>
-      <span class="eyebrow">CARRIÈRES</span>
-      <strong>Espace recrutement</strong>
-      <small> Cliquez ici pour afficher le formulaire et les coordonnées du recrutement.</small>
-    </summary>
-    <div class="accordion-content">
-      <p>Vous souhaitez rejoindre CONGO ONE SERVICES ? Remplissez ce formulaire de candidature. Votre application sera préparée dans votre messagerie pour être envoyée à notre service recrutement.</p>
-      <div class="public-contact-info">
-        <p><strong>Service recrutement :</strong> CONGO ONE SERVICES SARL</p>
-        <p><strong>E-mail de candidature :</strong> <a href="mailto:copservicessarl@gmail.com">copservicessarl@gmail.com</a></p>
-        <p><strong>Téléphone / WhatsApp :</strong> <a href="https://wa.me/243816823390" target="_blank" rel="noopener">+243 816 823 390</a></p>
-      </div>
-    <form id="recruitmentForm" class="public-form">
-      <label>Nom
-        <input id="applicantLastName" type="text" required>
-      </label>
-      <label>Postnom
-        <input id="applicantMiddleName" type="text" required>
-      </label>
-      <label>Prénom
-        <input id="applicantFirstName" type="text" required>
-      </label>
-      <label>Téléphone
-        <input id="applicantPhone" type="tel" placeholder="+243..." required>
-      </label>
-      <label>Adresse e-mail
-        <input id="applicantEmail" type="email">
-      </label>
-      <label>Poste souhaité
-        <select id="applicantPosition" required>
-          <option value="">Sélectionner un poste</option>
-          <option>Agent de sécurité / Gardien</option>
-          <option>Superviseur sécurité</option>
-          <option>Agent de nettoyage</option>
-          <option>Chauffeur</option>
-          <option>Agent vidéosurveillance</option>
-          <option>Agent de prévention incendie</option>
-          <option>Autre</option>
-        </select>
-      </label>
-      <label>Expérience et qualifications
-        <textarea id="applicantExperience" rows="4" required></textarea>
-      </label>
-      <label>Disponibilité
-        <select id="applicantAvailability" required>
-          <option value="">Sélectionner</option>
-          <option>Immédiate</option>
-          <option>Dans une semaine</option>
-          <option>Dans deux semaines</option>
-          <option>À convenir</option>
-        </select>
-      </label>
-      <button type="submit">Préparer ma candidature par e-mail</button>
-      <p id="recruitmentFormMessage" class="note" role="status">Après ouverture de votre messagerie, joignez votre CV et vos pièces justificatives avant l’envoi.</p>
-    </form>
-    </div>
-  </details>
-
-  <section class="card contact-section" id="contact">
-    <span class="eyebrow">RESTONS EN CONTACT</span>
-    <h2>Comment nous contacter</h2>
-    <p>Notre équipe est à votre disposition pour répondre à vos questions et étudier vos demandes de prestations.</p>
-    <div class="contact-actions">
-      <a href="https://wa.me/243816823390" target="_blank" rel="noopener">Nous écrire sur WhatsApp</a>
-      <a href="tel:+243816823390">Appeler le +243 816 823 390</a>
-      <a href="mailto:copservicessarl@gmail.com">Envoyer un e-mail</a>
-    </div>
-    <p><strong>Adresse :</strong> Kinshasa, commune de Kalamu, RDC.</p>
-  </section>
-
 </section>
 
 <!-- CONNEXION GERANT -->
@@ -700,116 +555,28 @@
   <small>COP MANAGEMENT © 2026</small>
 </footer>
 
-<!-- NAVIGATION -->
 <script>
-
-
-function ouvrirRubriqueDepuisLien() {
-  const id = decodeURIComponent(window.location.hash.slice(1));
-  const rubrique = document.getElementById(id);
-  if (rubrique && rubrique.tagName === "DETAILS") {
-    rubrique.open = true;
-  }
-}
-window.addEventListener("hashchange", ouvrirRubriqueDepuisLien);
-window.addEventListener("DOMContentLoaded", ouvrirRubriqueDepuisLien);
-
 function ouvrirConnexion(type) {
-
   document.getElementById("accueil").hidden = true;
   document.getElementById("connexion-gerant").hidden = true;
   document.getElementById("connexion-employe").hidden = true;
-
-  if (type === "gerant") {
-    document.getElementById("connexion-gerant").hidden = false;
-  }
-
-  if (type === "employe") {
-    document.getElementById("connexion-employe").hidden = false;
-  }
-
+  if (type === "gerant") document.getElementById("connexion-gerant").hidden = false;
+  if (type === "employe") document.getElementById("connexion-employe").hidden = false;
 }
-
-document.getElementById("newClientForm").addEventListener("submit", function(event) {
-  event.preventDefault();
-  const fields = [
-    ["Entreprise / client", document.getElementById("clientName").value.trim()],
-    ["Personne à contacter", document.getElementById("clientContact").value.trim()],
-    ["Téléphone", document.getElementById("clientPhone").value.trim()],
-    ["Adresse / commune", document.getElementById("clientAddress").value.trim()],
-    ["Service recherché", document.getElementById("clientService").value],
-    ["Besoin", document.getElementById("clientNeed").value.trim()]
-  ];
-  const message = "Bonjour CONGO ONE SERVICES SARL, je souhaite faire une demande de prestation.\\n\\n" +
-    fields.map(([label, value]) => label + " : " + value).join("\\n");
-  document.getElementById("clientFormMessage").textContent = "Ouverture de WhatsApp avec votre demande. Vérifiez le message puis appuyez sur Envoyer.";
-  window.open("https://wa.me/243816823390?text=" + encodeURIComponent(message), "_blank", "noopener");
-});
-
-document.getElementById("recruitmentForm").addEventListener("submit", function(event) {
-  event.preventDefault();
-  const get = id => document.getElementById(id).value.trim();
-  const subject = "Candidature - " + get("applicantPosition") + " - " + get("applicantLastName") + " " + get("applicantFirstName");
-  const body = [
-    "Bonjour,",
-    "",
-    "Je souhaite soumettre ma candidature auprès de CONGO ONE SERVICES SARL.",
-    "Nom : " + get("applicantLastName"),
-    "Postnom : " + get("applicantMiddleName"),
-    "Prénom : " + get("applicantFirstName"),
-    "Téléphone : " + get("applicantPhone"),
-    "E-mail : " + get("applicantEmail"),
-    "Poste souhaité : " + get("applicantPosition"),
-    "Expérience et qualifications : " + get("applicantExperience"),
-    "Disponibilité : " + get("applicantAvailability"),
-    "",
-    "Je joindrai mon CV et mes pièces justificatives."
-  ].join("\\n");
-  document.getElementById("recruitmentFormMessage").textContent = "Votre messagerie va s’ouvrir. Joignez votre CV et vos pièces justificatives avant d’envoyer.";
-  window.location.href = "mailto:copservicessarl@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
-});
-
-function ouvrirMesRapports() {
-  const contenu = document.getElementById("employeeReportsContent");
-  const bouton = document.querySelector('[aria-controls="employeeReportsContent"]');
-  if (!contenu || !bouton) return;
-  contenu.hidden = !contenu.hidden;
-  bouton.setAttribute("aria-expanded", String(!contenu.hidden));
-  if (!contenu.hidden) {
-    contenu.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  }
-}
-
 function retourAccueil() {
-
   document.getElementById("connexion-gerant").hidden = true;
   document.getElementById("connexion-employe").hidden = true;
   document.getElementById("accueil").hidden = false;
-
 }
-
 function afficherModule(moduleId) {
-
   document.getElementById("dashboardAccueil").hidden = true;
-
-  document.querySelectorAll(".module").forEach(function(module) {
-    module.hidden = true;
-  });
-
+  document.querySelectorAll(".module").forEach(module => module.hidden = true);
   document.getElementById(moduleId).hidden = false;
-
 }
-
 function retourModules() {
-
-  document.querySelectorAll(".module").forEach(function(module) {
-    module.hidden = true;
-  });
-
+  document.querySelectorAll(".module").forEach(module => module.hidden = true);
   document.getElementById("dashboardAccueil").hidden = false;
-
 }
-
 </script>
 
 <script type="module" src="app.js"></script>
