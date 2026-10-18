@@ -133,6 +133,7 @@ document.querySelector("#adminLoginForm").addEventListener("submit", async (e) =
     await afficherPersonnel();
     await afficherAffectationsAdmin();
     await afficherHorairesAdmin();
+    await afficherRapportsAdmin();
 
   } catch (error) {
     console.error("Erreur administrateur :", error);
@@ -246,6 +247,7 @@ document.querySelector("#employeeLoginForm").addEventListener("submit", async (e
 
     await afficherAffectationsEmploye(result.user.uid);
     await afficherHorairesEmploye(result.user.uid);
+    await afficherRapportsEmploye(result.user.uid);
 
     message.textContent =
       "Connexion réussie. Bienvenue dans COP MANAGEMENT !";
@@ -892,6 +894,134 @@ async function afficherHorairesEmploye(uid) {
   } catch (error) {
     console.error("Erreur lecture horaires employé :", error);
     message.textContent = "Impossible de charger vos horaires : " + error.code;
+  }
+}
+
+
+// MODULE RAPPORTS : ENVOI PAR L'EMPLOYE ET CONSULTATION PAR LE GERANT
+function creerCarteRapport(rapport) {
+  const card = document.createElement("article");
+  card.className = "person";
+  const title = document.createElement("strong");
+  title.textContent = (rapport.matricule || "") + " — " +
+    (rapport.site || "Site non précisé") + " — " + (rapport.dateRapport || "");
+  const details = document.createElement("p");
+  details.textContent = "Agent : " + (rapport.nomEmploye || "Non renseigné");
+  const description = document.createElement("p");
+  description.textContent = rapport.description || "";
+  card.append(title, details, description);
+  return card;
+}
+
+const employeeReportForm = document.querySelector("#employeeReportForm");
+
+if (employeeReportForm) {
+  employeeReportForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const button = employeeReportForm.querySelector('button[type="submit"]');
+    const message = document.querySelector("#employeeReportMessage");
+    button.disabled = true;
+    message.textContent = "Envoi du rapport en cours...";
+    try {
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error("Votre session a expiré. Reconnectez-vous.");
+
+      const profileSnapshot = await getDoc(doc(db, "users", currentUser.uid));
+      if (!profileSnapshot.exists()) throw new Error("Profil employé introuvable.");
+      const profile = profileSnapshot.data();
+      if (String(profile.role || "").trim().toLowerCase() !== "employee") {
+        throw new Error("Seul un compte employé peut envoyer un rapport ici.");
+      }
+
+      const matricule = String(profile.matricule || "").trim().toUpperCase();
+      const site = document.querySelector("#employeeReportSite").value.trim();
+      const dateRapport = document.querySelector("#employeeReportDate").value;
+      const description = document.querySelector("#employeeReportDescription").value.trim();
+      if (!site || !dateRapport || description.length < 10) {
+        throw new Error("Complétez tous les champs. Le compte rendu doit contenir au moins 10 caractères.");
+      }
+
+      let nomEmploye = "";
+      if (profile.employeeId) {
+        const employeeSnapshot = await getDoc(doc(db, "employees", profile.employeeId));
+        if (employeeSnapshot.exists()) {
+          const employee = employeeSnapshot.data();
+          nomEmploye = [employee.nom, employee.postnom, employee.prenom].filter(Boolean).join(" ");
+        }
+      }
+
+      await addDoc(collection(db, "reports"), {
+        matricule,
+        site,
+        dateRapport,
+        description,
+        nomEmploye,
+        employeeUid: currentUser.uid,
+        employeeId: profile.employeeId || "",
+        createdAt: serverTimestamp()
+      });
+
+      employeeReportForm.reset();
+      message.textContent = "Rapport envoyé avec succès au gérant.";
+      await afficherRapportsEmploye(currentUser.uid);
+    } catch (error) {
+      console.error("Erreur envoi rapport :", error);
+      message.textContent = "Envoi impossible : " + (error.message || error.code);
+    } finally {
+      button.disabled = false;
+    }
+  });
+}
+
+async function afficherRapportsAdmin() {
+  const message = document.querySelector("#reportAdminMessage");
+  const items = document.querySelector("#reportAdminItems");
+  if (!message || !items || !auth.currentUser) return;
+  message.textContent = "Chargement des rapports...";
+  items.replaceChildren();
+  try {
+    await verifierAdministrateur();
+    const snapshot = await getDocs(collection(db, "reports"));
+    if (snapshot.empty) {
+      message.textContent = "Aucun rapport reçu pour le moment.";
+      return;
+    }
+    const records = [];
+    snapshot.forEach(item => records.push(item.data()));
+    records.sort((a, b) => {
+      const dateA = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
+      const dateB = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
+      return dateB - dateA;
+    });
+    records.forEach(record => items.appendChild(creerCarteRapport(record)));
+    message.textContent = records.length + " rapport(s) reçu(s).";
+  } catch (error) {
+    console.error("Erreur lecture rapports gérant :", error);
+    message.textContent = "Chargement impossible : " + (error.message || error.code);
+  }
+}
+
+async function afficherRapportsEmploye(uid) {
+  const message = document.querySelector("#employeeReportMessage");
+  const items = document.querySelector("#employeeReportItems");
+  if (!message || !items) return;
+  message.textContent = "Chargement de vos rapports...";
+  items.replaceChildren();
+  try {
+    const q = query(collection(db, "reports"), where("employeeUid", "==", uid));
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) {
+      message.textContent = "Vous n'avez encore envoyé aucun rapport.";
+      return;
+    }
+    const records = [];
+    snapshot.forEach(item => records.push(item.data()));
+    records.sort((a, b) => String(b.dateRapport || "").localeCompare(String(a.dateRapport || "")));
+    records.forEach(record => items.appendChild(creerCarteRapport(record)));
+    message.textContent = records.length + " rapport(s) envoyé(s).";
+  } catch (error) {
+    console.error("Erreur lecture rapports employé :", error);
+    message.textContent = "Impossible de charger vos rapports : " + (error.message || error.code);
   }
 }
 
