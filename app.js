@@ -610,6 +610,46 @@ window.deconnexionEmploye = async function () {
 };
 
 
+// RETROUVER UN EMPLOYE PAR SON MATRICULE
+// Secours : si employeeUid manque dans employees, retrouver le compte
+// connecté à partir de son profil users/{uid}.
+async function trouverEmployeParMatricule(matricule) {
+  const employeesSnapshot = await getDocs(collection(db, "employees"));
+  let employee = null;
+
+  employeesSnapshot.forEach((employeeDoc) => {
+    const data = employeeDoc.data();
+    if (String(data.matricule || "").trim().toUpperCase() === matricule) {
+      employee = { id: employeeDoc.id, ...data };
+    }
+  });
+
+  if (!employee) return null;
+  if (employee.employeeUid) return employee;
+
+  const usersSnapshot = await getDocs(collection(db, "users"));
+  let linkedUser = null;
+
+  usersSnapshot.forEach((userDoc) => {
+    const data = userDoc.data();
+    if (
+      String(data.matricule || "").trim().toUpperCase() === matricule &&
+      String(data.role || "").trim().toLowerCase() === "employee"
+    ) {
+      linkedUser = { uid: userDoc.id, ...data };
+    }
+  });
+
+  if (!linkedUser) return employee;
+
+  return {
+    ...employee,
+    employeeUid: linkedUser.uid,
+    employeeId: linkedUser.employeeId || employee.id
+  };
+}
+
+
 // MODULE AFFECTATIONS : ENREGISTREMENT ET CONSULTATION
 const assignmentForm = document.querySelector("#assignmentForm");
 
@@ -634,14 +674,7 @@ if (assignmentForm) {
         throw new Error("Matricule invalide. Exemple : COP0001.");
       }
 
-      const employeesSnapshot = await getDocs(collection(db, "employees"));
-      let employee = null;
-      employeesSnapshot.forEach((employeeDoc) => {
-        const data = employeeDoc.data();
-        if (String(data.matricule || "").toUpperCase() === matricule) {
-          employee = { id: employeeDoc.id, ...data };
-        }
-      });
+      const employee = await trouverEmployeParMatricule(matricule);
 
       if (!employee || !employee.employeeUid) {
         throw new Error("Aucun compte employé actif ne correspond à ce matricule.");
@@ -784,14 +817,7 @@ if (scheduleForm) {
         throw new Error("Pour un service de jour ou en rotation, l'heure de fin doit être après l'heure de début. Choisissez Nuit si le service traverse minuit.");
       }
 
-      const employeesSnapshot = await getDocs(collection(db, "employees"));
-      let employee = null;
-      employeesSnapshot.forEach((employeeDoc) => {
-        const data = employeeDoc.data();
-        if (String(data.matricule || "").toUpperCase() === matricule) {
-          employee = { id: employeeDoc.id, ...data };
-        }
-      });
+      const employee = await trouverEmployeParMatricule(matricule);
       if (!employee || !employee.employeeUid) {
         throw new Error("Aucun compte employé ne correspond à ce matricule.");
       }
