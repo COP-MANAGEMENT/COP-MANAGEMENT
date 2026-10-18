@@ -1,9 +1,14 @@
-const CACHE_NAME = "cop-management-v13";
+const CACHE_NAME = "cop-management-v14";
 
 const FILES = [
 "./",
 "./index.html",
 "./services.html",
+"./qui-sommes-nous.html",
+"./actualites.html",
+"./contact.html",
+"./carrieres.html",
+"./espace-client.html",
 "./styles.css",
 "./app.js",
 "./manifest.webmanifest",
