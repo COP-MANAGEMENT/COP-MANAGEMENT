@@ -205,8 +205,40 @@ document.querySelector("#employeeLoginForm").addEventListener("submit", async (e
     document.querySelector("#employeeDashboardMatricule").textContent =
       matriculeEnregistre;
 
-    document.querySelector("#employeeDashboardEmail").textContent =
-      userData.email || "Non renseigné";
+    // Charger la fiche employé liée au compte connecté.
+    const employeeProfile = userData.employeeId
+      ? await getDoc(doc(db, "employees", userData.employeeId))
+      : null;
+
+    if (employeeProfile && employeeProfile.exists()) {
+      const employee = employeeProfile.data();
+      const fullName = [employee.nom, employee.postnom, employee.prenom]
+        .filter(Boolean).join(" ");
+
+      document.querySelector("#employeeDashboardName").textContent =
+        fullName || "Non renseigné";
+      document.querySelector("#employeeDashboardFunction").textContent =
+        employee.fonction || "Non renseignée";
+      document.querySelector("#employeeDashboardPhone").textContent =
+        employee.telephone || "Non renseigné";
+      document.querySelector("#employeeDashboardSite").textContent =
+        employee.siteTravail || "Non renseigné";
+      document.querySelector("#employeeDashboardStatus").textContent =
+        employee.statut || "Non renseigné";
+
+      const photo = document.querySelector("#employeeDashboardPhoto");
+      if (employee.photoUrl) {
+        photo.src = employee.photoUrl;
+        photo.hidden = false;
+        photo.onerror = () => { photo.hidden = true; };
+      } else {
+        photo.removeAttribute("src");
+        photo.hidden = true;
+      }
+    } else {
+      document.querySelector("#employeeDashboardName").textContent =
+        "Fiche employé non accessible";
+    }
 
     message.textContent =
       "Connexion réussie. Bienvenue dans COP MANAGEMENT !";
@@ -310,6 +342,8 @@ if (employeeForm) {
       const engagement = document.querySelector("#employeeEngagement").value;
       const contrat = document.querySelector("#employeeContrat").value;
       const statut = document.querySelector("#employeeStatut").value;
+      const siteTravail = document.querySelector("#employeeSite").value.trim();
+      const photoUrl = document.querySelector("#employeePhotoUrl").value.trim();
 
       if (
         !nom ||
@@ -362,6 +396,8 @@ if (employeeForm) {
           dateEngagement: engagement,
           typeContrat: contrat,
           statut,
+          siteTravail,
+          photoUrl,
           employeeUid: nouvelUtilisateur.uid,
           createdAt: serverTimestamp(),
           createdBy: auth.currentUser.uid
