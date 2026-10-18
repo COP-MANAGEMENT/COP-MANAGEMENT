@@ -19,7 +19,14 @@
     <small>Votre sécurité, notre priorité.</small>
   </div>
   <span class="brand-tag">COP MANAGEMENT</span>
-  <a class="header-services-link" href="services.html">Nos services <span aria-hidden="true">→</span></a>
+  <nav class="header-nav" aria-label="Navigation principale">
+    <a href="services.html">Nos services</a>
+    <a href="#qui-sommes-nous">Qui sommes-nous</a>
+    <a href="#actualites">Actualités</a>
+    <a href="#contact">Comment nous contacter</a>
+    <a href="#recrutement">Carrières</a>
+    <a href="#nouveau-client">Espace client</a>
+  </nav>
 </header>
 
 <main>
@@ -41,7 +48,7 @@
     </div>
   </section>
 
-  <section class="card company-intro">
+  <section class="card company-intro" id="qui-sommes-nous">
     <span class="eyebrow">QUI SOMMES-NOUS ?</span>
     <h2>Bienvenue chez CONGO ONE SERVICES</h2>
     <p>CONGO ONE SERVICES SARL est une société multiservices basée à Kinshasa, en République démocratique du Congo. Elle développe des prestations de sécurité et d’accompagnement opérationnel pour répondre aux besoins de ses clients.</p>
@@ -172,6 +179,19 @@
     </form>
     </div>
   </details>
+
+  <section class="card contact-section" id="contact">
+    <span class="eyebrow">RESTONS EN CONTACT</span>
+    <h2>Comment nous contacter</h2>
+    <p>Notre équipe est à votre disposition pour répondre à vos questions et étudier vos demandes de prestations.</p>
+    <div class="contact-actions">
+      <a href="https://wa.me/243816823390" target="_blank" rel="noopener">Nous écrire sur WhatsApp</a>
+      <a href="tel:+243816823390">Appeler le +243 816 823 390</a>
+      <a href="mailto:copservicessarl@gmail.com">Envoyer un e-mail</a>
+    </div>
+    <p><strong>Adresse :</strong> Kinshasa, commune de Kalamu, RDC.</p>
+  </section>
+
 </section>
 
 <!-- CONNEXION GERANT -->
@@ -682,6 +702,17 @@
 
 <!-- NAVIGATION -->
 <script>
+
+
+function ouvrirRubriqueDepuisLien() {
+  const id = decodeURIComponent(window.location.hash.slice(1));
+  const rubrique = document.getElementById(id);
+  if (rubrique && rubrique.tagName === "DETAILS") {
+    rubrique.open = true;
+  }
+}
+window.addEventListener("hashchange", ouvrirRubriqueDepuisLien);
+window.addEventListener("DOMContentLoaded", ouvrirRubriqueDepuisLien);
 
 function ouvrirConnexion(type) {
 
