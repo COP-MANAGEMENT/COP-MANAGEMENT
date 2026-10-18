@@ -86,3 +86,10 @@
 .contact-actions a{display:inline-flex;align-items:center;justify-content:center;padding:11px 14px;border-radius:8px;background:#30363b;color:#fff;text-decoration:none;font-weight:700}
 .contact-actions a:first-child{background:#a64036}
 @media(max-width:600px){.header-nav{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;padding:8px 0 10px;scrollbar-width:thin}.header-nav a{flex:0 0 auto;font-size:12px;padding:9px 11px}.contact-actions{display:grid;grid-template-columns:1fr}.contact-actions a{width:100%}}
+
+
+/* Pages séparées pour chaque rubrique du site */
+.public-page{max-width:1000px;min-height:55vh;margin:0 auto;padding:18px}
+.public-page>.card{margin-top:8px}
+.brand-home{display:inline-flex;align-items:center}
+@media(max-width:600px){.public-page{padding:12px}}
