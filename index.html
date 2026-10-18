@@ -80,19 +80,19 @@
     </article>
   </section>
 
-  <section class="card home-contact" id="contact">
-    <span class="eyebrow">CONTACT</span>
-    <h2>Parlons de votre besoin</h2>
-    <p><strong>Téléphone / WhatsApp :</strong> <a href="https://wa.me/243816823390" target="_blank" rel="noopener">+243 816 823 390</a></p>
-    <p><strong>E-mail :</strong> <a href="mailto:copservicessarl@gmail.com">copservicessarl@gmail.com</a></p>
-    <p><strong>Siège social :</strong> Kinshasa, commune de Kalamu, RDC.</p>
-    <p><strong>Notre engagement :</strong> professionnalisme, disponibilité et sens du service.</p>
-  </section>
-
-  <section class="card public-form-section" id="nouveau-client">
-    <span class="eyebrow">ESPACE CLIENT</span>
-    <h2>Vous êtes un nouveau client ?</h2>
-    <p>Présentez-nous votre besoin. Votre demande sera préparée et envoyée directement à notre équipe via WhatsApp.</p>
+  <details class="card public-form-section public-accordion" id="nouveau-client">
+    <summary>
+      <span class="eyebrow">ESPACE CLIENT</span>
+      <strong>Vous êtes un nouveau client ?</strong>
+      <small> Cliquez ici pour afficher le formulaire et nos coordonnées.</small>
+    </summary>
+    <div class="accordion-content">
+      <p>Présentez-nous votre besoin. Votre demande sera préparée et envoyée directement à notre équipe via WhatsApp.</p>
+      <div class="public-contact-info">
+        <p><strong>Téléphone / WhatsApp :</strong> <a href="https://wa.me/243816823390" target="_blank" rel="noopener">+243 816 823 390</a></p>
+        <p><strong>E-mail :</strong> <a href="mailto:copservicessarl@gmail.com">copservicessarl@gmail.com</a></p>
+        <p><strong>Siège social :</strong> Kinshasa, commune de Kalamu, RDC.</p>
+      </div>
     <form id="newClientForm" class="public-form">
       <label>Nom de l’entreprise ou du client
         <input id="clientName" type="text" required>
@@ -123,12 +123,22 @@
       <button type="submit">Envoyer ma demande par WhatsApp</button>
       <p id="clientFormMessage" class="note" role="status"></p>
     </form>
-  </section>
+    </div>
+  </details>
 
-  <section class="card public-form-section" id="recrutement">
-    <span class="eyebrow">CARRIÈRES</span>
-    <h2>Espace recrutement</h2>
-    <p>Vous souhaitez rejoindre CONGO ONE SERVICES ? Remplissez ce formulaire de candidature. Votre application sera préparée dans votre messagerie pour être envoyée à notre service recrutement.</p>
+  <details class="card public-form-section public-accordion" id="recrutement">
+    <summary>
+      <span class="eyebrow">CARRIÈRES</span>
+      <strong>Espace recrutement</strong>
+      <small> Cliquez ici pour afficher le formulaire et les coordonnées du recrutement.</small>
+    </summary>
+    <div class="accordion-content">
+      <p>Vous souhaitez rejoindre CONGO ONE SERVICES ? Remplissez ce formulaire de candidature. Votre application sera préparée dans votre messagerie pour être envoyée à notre service recrutement.</p>
+      <div class="public-contact-info">
+        <p><strong>Service recrutement :</strong> CONGO ONE SERVICES SARL</p>
+        <p><strong>E-mail de candidature :</strong> <a href="mailto:copservicessarl@gmail.com">copservicessarl@gmail.com</a></p>
+        <p><strong>Téléphone / WhatsApp :</strong> <a href="https://wa.me/243816823390" target="_blank" rel="noopener">+243 816 823 390</a></p>
+      </div>
     <form id="recruitmentForm" class="public-form">
       <label>Nom
         <input id="applicantLastName" type="text" required>
@@ -172,7 +182,8 @@
       <button type="submit">Préparer ma candidature par e-mail</button>
       <p id="recruitmentFormMessage" class="note" role="status">Après ouverture de votre messagerie, joignez votre CV et vos pièces justificatives avant l’envoi.</p>
     </form>
-  </section>
+    </div>
+  </details>
 </section>
 
 <!-- CONNEXION GERANT -->
