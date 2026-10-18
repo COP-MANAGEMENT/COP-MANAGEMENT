@@ -132,6 +132,7 @@ document.querySelector("#adminLoginForm").addEventListener("submit", async (e) =
 
     await afficherPersonnel();
     await afficherAffectationsAdmin();
+    await afficherHorairesAdmin();
 
   } catch (error) {
     console.error("Erreur administrateur :", error);
@@ -244,6 +245,7 @@ document.querySelector("#employeeLoginForm").addEventListener("submit", async (e
     }
 
     await afficherAffectationsEmploye(result.user.uid);
+    await afficherHorairesEmploye(result.user.uid);
 
     message.textContent =
       "Connexion réussie. Bienvenue dans COP MANAGEMENT !";
@@ -733,6 +735,137 @@ async function afficherAffectationsEmploye(uid) {
   } catch (error) {
     console.error("Erreur lecture affectations employé :", error);
     message.textContent = "Impossible de charger vos affectations : " + error.code;
+  }
+}
+
+
+// MODULE HORAIRES : ENREGISTREMENT ET CONSULTATION
+const scheduleForm = document.querySelector("#scheduleForm");
+
+function creerCarteHoraire(horaire) {
+  const card = document.createElement("article");
+  card.className = "person";
+  const title = document.createElement("strong");
+  title.textContent = (horaire.dateService || "Date non précisée") +
+    " — " + (horaire.matricule || "") + " — " + (horaire.site || "Site non précisé");
+  const details = document.createElement("p");
+  details.textContent = "Service : " + (horaire.typeService || "—") +
+    " | De " + (horaire.heureDebut || "—") + " à " + (horaire.heureFin || "—");
+  card.append(title, details);
+  if (horaire.consignes) {
+    const note = document.createElement("p");
+    note.textContent = "Consignes : " + horaire.consignes;
+    card.appendChild(note);
+  }
+  return card;
+}
+
+if (scheduleForm) {
+  scheduleForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const button = scheduleForm.querySelector('button[type="submit"]');
+    const message = document.querySelector("#scheduleMessage");
+    button.disabled = true;
+    message.textContent = "Enregistrement en cours...";
+    try {
+      await verifierAdministrateur();
+      const matricule = document.querySelector("#scheduleMatricule").value.trim().toUpperCase();
+      const dateService = document.querySelector("#scheduleDate").value;
+      const heureDebut = document.querySelector("#scheduleStart").value;
+      const heureFin = document.querySelector("#scheduleEnd").value;
+      const typeService = document.querySelector("#scheduleType").value;
+      const site = document.querySelector("#scheduleSite").value.trim();
+      const consignes = document.querySelector("#scheduleInstructions").value.trim();
+
+      if (!/^COP\\d{4}$/.test(matricule)) {
+        throw new Error("Matricule invalide. Exemple : COP0001.");
+      }
+      if (heureFin <= heureDebut && typeService !== "Nuit") {
+        throw new Error("Pour un service de jour ou en rotation, l'heure de fin doit être après l'heure de début. Choisissez Nuit si le service traverse minuit.");
+      }
+
+      const employeesSnapshot = await getDocs(collection(db, "employees"));
+      let employee = null;
+      employeesSnapshot.forEach((employeeDoc) => {
+        const data = employeeDoc.data();
+        if (String(data.matricule || "").toUpperCase() === matricule) {
+          employee = { id: employeeDoc.id, ...data };
+        }
+      });
+      if (!employee || !employee.employeeUid) {
+        throw new Error("Aucun compte employé ne correspond à ce matricule.");
+      }
+
+      await addDoc(collection(db, "schedules"), {
+        matricule,
+        dateService,
+        heureDebut,
+        heureFin,
+        typeService,
+        site,
+        consignes,
+        employeeUid: employee.employeeUid,
+        employeeId: employee.id,
+        createdAt: serverTimestamp(),
+        createdBy: auth.currentUser.uid
+      });
+      scheduleForm.reset();
+      message.textContent = "Horaire enregistré. Il est maintenant visible dans l'espace de l'employé.";
+      await afficherHorairesAdmin();
+    } catch (error) {
+      console.error("Erreur horaire :", error);
+      message.textContent = "Enregistrement impossible : " + (error.message || error.code);
+    } finally {
+      button.disabled = false;
+    }
+  });
+}
+
+async function afficherHorairesAdmin() {
+  const message = document.querySelector("#scheduleListMessage");
+  const items = document.querySelector("#scheduleItems");
+  if (!message || !items || !auth.currentUser) return;
+  message.textContent = "Chargement des horaires...";
+  items.replaceChildren();
+  try {
+    await verifierAdministrateur();
+    const snapshot = await getDocs(collection(db, "schedules"));
+    if (snapshot.empty) {
+      message.textContent = "Aucun horaire enregistré pour le moment.";
+      return;
+    }
+    const records = [];
+    snapshot.forEach(item => records.push(item.data()));
+    records.sort((a, b) => String(a.dateService || "").localeCompare(String(b.dateService || "")));
+    records.forEach(record => items.appendChild(creerCarteHoraire(record)));
+    message.textContent = records.length + " horaire(s) enregistré(s).";
+  } catch (error) {
+    console.error("Erreur lecture horaires gérant :", error);
+    message.textContent = "Chargement impossible : " + error.code;
+  }
+}
+
+async function afficherHorairesEmploye(uid) {
+  const message = document.querySelector("#employeeScheduleMessage");
+  const items = document.querySelector("#employeeScheduleItems");
+  if (!message || !items) return;
+  message.textContent = "Chargement de vos horaires...";
+  items.replaceChildren();
+  try {
+    const q = query(collection(db, "schedules"), where("employeeUid", "==", uid));
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) {
+      message.textContent = "Aucun horaire ne vous a encore été attribué.";
+      return;
+    }
+    const records = [];
+    snapshot.forEach(item => records.push(item.data()));
+    records.sort((a, b) => String(a.dateService || "").localeCompare(String(b.dateService || "")));
+    records.forEach(record => items.appendChild(creerCarteHoraire(record)));
+    message.textContent = records.length + " horaire(s) disponible(s).";
+  } catch (error) {
+    console.error("Erreur lecture horaires employé :", error);
+    message.textContent = "Impossible de charger vos horaires : " + error.code;
   }
 }
 
