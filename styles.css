@@ -74,3 +74,15 @@
 .services-page-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
 .services-page-actions a{display:inline-flex;align-items:center;justify-content:center;padding:11px 16px;border-radius:8px;background:#30363b;color:#fff;text-decoration:none;font-weight:700}
 .services-page-actions a.secondary{background:#f2c230;color:#30363b}
+
+
+/* Navigation principale des rubriques publiques */
+.header-nav{order:5;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;padding:8px 0 2px}
+.header-nav a{display:inline-flex;align-items:center;justify-content:center;padding:9px 12px;border:1px solid #687078;border-radius:8px;color:#fff;text-decoration:none;font-size:13px;font-weight:700;white-space:nowrap;transition:background .2s,border-color .2s,color .2s}
+.header-nav a:hover,.header-nav a:focus,.header-nav a[aria-current="page"]{background:#f2c230;border-color:#f2c230;color:#30363b;outline:none}
+.company-intro,.news-section,.contact-section,#nouveau-client,#recrutement{scroll-margin-top:18px}
+.contact-section{line-height:1.6}
+.contact-actions{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.contact-actions a{display:inline-flex;align-items:center;justify-content:center;padding:11px 14px;border-radius:8px;background:#30363b;color:#fff;text-decoration:none;font-weight:700}
+.contact-actions a:first-child{background:#a64036}
+@media(max-width:600px){.header-nav{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;padding:8px 0 10px;scrollbar-width:thin}.header-nav a{flex:0 0 auto;font-size:12px;padding:9px 11px}.contact-actions{display:grid;grid-template-columns:1fr}.contact-actions a{width:100%}}
