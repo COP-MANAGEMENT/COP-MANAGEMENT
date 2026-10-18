@@ -1,4 +1,4 @@
-const CACHE_NAME = "cop-management-v12";
+const CACHE_NAME = "cop-management-v13";
 
 const FILES = [
 "./",
