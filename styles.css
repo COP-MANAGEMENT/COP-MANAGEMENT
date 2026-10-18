@@ -64,3 +64,13 @@
 .header-services-link:hover,.header-services-link:focus{background:#f2c230;color:#30363b;outline:none}
 #services{scroll-margin-top:18px}
 @media(max-width:600px){.header-services-link{width:100%;justify-content:center;margin:2px 0 0}}
+
+
+/* Page publique dédiée aux prestations */
+.services-page{padding:28px 0 36px}
+.services-page-intro{margin-bottom:22px;line-height:1.6;color:#596168}
+.services-page .service-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.services-page .service-card{min-height:150px}
+.services-page-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.services-page-actions a{display:inline-flex;align-items:center;justify-content:center;padding:11px 16px;border-radius:8px;background:#30363b;color:#fff;text-decoration:none;font-weight:700}
+.services-page-actions a.secondary{background:#f2c230;color:#30363b}
