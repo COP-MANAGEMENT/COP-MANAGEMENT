@@ -60,11 +60,108 @@
     </div>
   </section>
 
-  <section class="card home-contact">
-    <h2>Votre partenaire de confiance</h2>
-    <p>Vous souhaitez obtenir des informations ou présenter un besoin ? Contactez CONGO ONE SERVICES SARL.</p>
+  <section class="card news-section" id="actualites">
+    <span class="eyebrow">INFORMATIONS</span>
+    <h2>Actualités de COP</h2>
+    <article class="news-card">
+      <small>CONGO ONE SERVICES SARL</small>
+      <h3>Bienvenue sur notre site officiel</h3>
+      <p>Retrouvez ici les annonces, informations et nouveautés concernant nos services. Cette rubrique sera régulièrement actualisée.</p>
+    </article>
+  </section>
+
+  <section class="card home-contact" id="contact">
+    <span class="eyebrow">CONTACT</span>
+    <h2>Parlons de votre besoin</h2>
+    <p><strong>Téléphone / WhatsApp :</strong> <a href="https://wa.me/243816823390" target="_blank" rel="noopener">+243 816 823 390</a></p>
+    <p><strong>E-mail :</strong> <a href="mailto:copservicessarl@gmail.com">copservicessarl@gmail.com</a></p>
+    <p><strong>Siège social :</strong> Kinshasa, commune de Kalamu, RDC.</p>
     <p><strong>Notre engagement :</strong> professionnalisme, disponibilité et sens du service.</p>
-    <p class="note">Les coordonnées téléphoniques et l’adresse e-mail professionnelle seront ajoutées dès leur confirmation.</p>
+  </section>
+
+  <section class="card public-form-section" id="nouveau-client">
+    <span class="eyebrow">ESPACE CLIENT</span>
+    <h2>Vous êtes un nouveau client ?</h2>
+    <p>Présentez-nous votre besoin. Votre demande sera préparée et envoyée directement à notre équipe via WhatsApp.</p>
+    <form id="newClientForm" class="public-form">
+      <label>Nom de l’entreprise ou du client
+        <input id="clientName" type="text" required>
+      </label>
+      <label>Personne à contacter
+        <input id="clientContact" type="text" required>
+      </label>
+      <label>Téléphone
+        <input id="clientPhone" type="tel" placeholder="+243..." required>
+      </label>
+      <label>Adresse ou commune d’intervention
+        <input id="clientAddress" type="text" required>
+      </label>
+      <label>Service recherché
+        <select id="clientService" required>
+          <option value="">Sélectionner un service</option>
+          <option>Gardiennage et sécurité privée</option>
+          <option>Vidéosurveillance</option>
+          <option>Service incendie</option>
+          <option>Nettoyage et entretien</option>
+          <option>Chauffeur</option>
+          <option>Autres services</option>
+        </select>
+      </label>
+      <label>Décrivez votre besoin
+        <textarea id="clientNeed" rows="4" required></textarea>
+      </label>
+      <button type="submit">Envoyer ma demande par WhatsApp</button>
+      <p id="clientFormMessage" class="note" role="status"></p>
+    </form>
+  </section>
+
+  <section class="card public-form-section" id="recrutement">
+    <span class="eyebrow">CARRIÈRES</span>
+    <h2>Espace recrutement</h2>
+    <p>Vous souhaitez rejoindre CONGO ONE SERVICES ? Remplissez ce formulaire de candidature. Votre application sera préparée dans votre messagerie pour être envoyée à notre service recrutement.</p>
+    <form id="recruitmentForm" class="public-form">
+      <label>Nom
+        <input id="applicantLastName" type="text" required>
+      </label>
+      <label>Postnom
+        <input id="applicantMiddleName" type="text" required>
+      </label>
+      <label>Prénom
+        <input id="applicantFirstName" type="text" required>
+      </label>
+      <label>Téléphone
+        <input id="applicantPhone" type="tel" placeholder="+243..." required>
+      </label>
+      <label>Adresse e-mail
+        <input id="applicantEmail" type="email">
+      </label>
+      <label>Poste souhaité
+        <select id="applicantPosition" required>
+          <option value="">Sélectionner un poste</option>
+          <option>Agent de sécurité / Gardien</option>
+          <option>Superviseur sécurité</option>
+          <option>Agent de nettoyage</option>
+          <option>Chauffeur</option>
+          <option>Agent vidéosurveillance</option>
+          <option>Agent de prévention incendie</option>
+          <option>Autre</option>
+        </select>
+      </label>
+      <label>Expérience et qualifications
+        <textarea id="applicantExperience" rows="4" required></textarea>
+      </label>
+      <label>Disponibilité
+        <select id="applicantAvailability" required>
+          <option value="">Sélectionner</option>
+          <option>Immédiate</option>
+          <option>Dans une semaine</option>
+          <option>Dans deux semaines</option>
+          <option>À convenir</option>
+        </select>
+      </label>
+      <button type="submit">Préparer ma candidature par e-mail</button>
+      <p id="recruitmentFormMessage" class="note" role="status">Après ouverture de votre messagerie, joignez votre CV et vos pièces justificatives avant l’envoi.</p>
+    </form>
   </section>
 </section>
 
@@ -544,6 +641,7 @@
 <footer>
   <p>CONGO ONE SERVICES SARL</p>
   <small>Votre sécurité, notre priorité.</small>
+  <p><a href="tel:+243816823390">+243 816 823 390</a> · <a href="mailto:copservicessarl@gmail.com">copservicessarl@gmail.com</a></p>
   <small>COP MANAGEMENT © 2026</small>
 </footer>
 
@@ -565,6 +663,45 @@ function ouvrirConnexion(type) {
   }
 
 }
+
+document.getElementById("newClientForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+  const fields = [
+    ["Entreprise / client", document.getElementById("clientName").value.trim()],
+    ["Personne à contacter", document.getElementById("clientContact").value.trim()],
+    ["Téléphone", document.getElementById("clientPhone").value.trim()],
+    ["Adresse / commune", document.getElementById("clientAddress").value.trim()],
+    ["Service recherché", document.getElementById("clientService").value],
+    ["Besoin", document.getElementById("clientNeed").value.trim()]
+  ];
+  const message = "Bonjour CONGO ONE SERVICES SARL, je souhaite faire une demande de prestation.\\n\\n" +
+    fields.map(([label, value]) => label + " : " + value).join("\\n");
+  document.getElementById("clientFormMessage").textContent = "Ouverture de WhatsApp avec votre demande. Vérifiez le message puis appuyez sur Envoyer.";
+  window.open("https://wa.me/243816823390?text=" + encodeURIComponent(message), "_blank", "noopener");
+});
+
+document.getElementById("recruitmentForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+  const get = id => document.getElementById(id).value.trim();
+  const subject = "Candidature - " + get("applicantPosition") + " - " + get("applicantLastName") + " " + get("applicantFirstName");
+  const body = [
+    "Bonjour,",
+    "",
+    "Je souhaite soumettre ma candidature auprès de CONGO ONE SERVICES SARL.",
+    "Nom : " + get("applicantLastName"),
+    "Postnom : " + get("applicantMiddleName"),
+    "Prénom : " + get("applicantFirstName"),
+    "Téléphone : " + get("applicantPhone"),
+    "E-mail : " + get("applicantEmail"),
+    "Poste souhaité : " + get("applicantPosition"),
+    "Expérience et qualifications : " + get("applicantExperience"),
+    "Disponibilité : " + get("applicantAvailability"),
+    "",
+    "Je joindrai mon CV et mes pièces justificatives."
+  ].join("\\n");
+  document.getElementById("recruitmentFormMessage").textContent = "Votre messagerie va s’ouvrir. Joignez votre CV et vos pièces justificatives avant d’envoyer.";
+  window.location.href = "mailto:copservicessarl@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+});
 
 function retourAccueil() {
 
