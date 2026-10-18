@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#30363b">
+  <title>Carrières - CONGO ONE SERVICES SARL</title>
+  <meta name="description" content="Rejoindre les équipes de CONGO ONE SERVICES SARL.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.webmanifest">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand-home" href="index.html" aria-label="Accueil CONGO ONE SERVICES"><img class="brand-logo" src="logo-cop.svg" alt="Logo CONGO ONE SERVICES"></a>
+  <div class="brand-copy"><strong>CONGO ONE SERVICES SARL</strong><small>Votre sécurité, notre priorité.</small></div>
+  <span class="brand-tag">COP MANAGEMENT</span>
+  <nav class="header-nav" aria-label="Navigation principale">
+    <a href="services.html">Nos services</a>
+    <a href="qui-sommes-nous.html">Qui sommes-nous</a>
+    <a href="actualites.html">Actualités</a>
+    <a href="contact.html">Comment nous contacter</a>
+    <a href="carrieres.html" aria-current="page">Carrières</a>
+    <a href="espace-client.html">Espace client</a>
+  </nav>
+</header>
+<main class="public-page">
+  <details class="card public-form-section public-accordion" id="recrutement">
+    <summary>
+      <span class="eyebrow">CARRIÈRES</span>
+      <strong>Espace recrutement</strong>
+      <small> Cliquez ici pour afficher le formulaire et les coordonnées du recrutement.</small>
+    </summary>
+    <div class="accordion-content">
+      <p>Vous souhaitez rejoindre CONGO ONE SERVICES ? Remplissez ce formulaire de candidature. Votre application sera préparée dans votre messagerie pour être envoyée à notre service recrutement.</p>
+      <div class="public-contact-info">
+        <p><strong>Service recrutement :</strong> CONGO ONE SERVICES SARL</p>
+        <p><strong>E-mail de candidature :</strong> <a href="mailto:copservicessarl@gmail.com">copservicessarl@gmail.com</a></p>
+        <p><strong>Téléphone / WhatsApp :</strong> <a href="https://wa.me/243816823390" target="_blank" rel="noopener">+243 816 823 390</a></p>
+      </div>
+    <form id="recruitmentForm" class="public-form">
+      <label>Nom
+        <input id="applicantLastName" type="text" required>
+      </label>
+      <label>Postnom
+        <input id="applicantMiddleName" type="text" required>
+      </label>
+      <label>Prénom
+        <input id="applicantFirstName" type="text" required>
+      </label>
+      <label>Téléphone
+        <input id="applicantPhone" type="tel" placeholder="+243..." required>
+      </label>
+      <label>Adresse e-mail
+        <input id="applicantEmail" type="email">
+      </label>
+      <label>Poste souhaité
+        <select id="applicantPosition" required>
+          <option value="">Sélectionner un poste</option>
+          <option>Agent de sécurité / Gardien</option>
+          <option>Superviseur sécurité</option>
+          <option>Agent de nettoyage</option>
+          <option>Chauffeur</option>
+          <option>Agent vidéosurveillance</option>
+          <option>Agent de prévention incendie</option>
+          <option>Autre</option>
+        </select>
+      </label>
+      <label>Expérience et qualifications
+        <textarea id="applicantExperience" rows="4" required></textarea>
+      </label>
+      <label>Disponibilité
+        <select id="applicantAvailability" required>
+          <option value="">Sélectionner</option>
+          <option>Immédiate</option>
+          <option>Dans une semaine</option>
+          <option>Dans deux semaines</option>
+          <option>À convenir</option>
+        </select>
+      </label>
+      <button type="submit">Préparer ma candidature par e-mail</button>
+      <p id="recruitmentFormMessage" class="note" role="status">Après ouverture de votre messagerie, joignez votre CV et vos pièces justificatives avant l’envoi.</p>
+    </form>
+    </div>
+  </details>
+</main>
+<footer>
+  <p>CONGO ONE SERVICES SARL</p>
+  <small>Votre sécurité, notre priorité.</small>
+  <p><a href="tel:+243816823390">+243 816 823 390</a> · <a href="mailto:copservicessarl@gmail.com">copservicessarl@gmail.com</a></p>
+  <small>COP MANAGEMENT © 2026</small>
+</footer>
+<script>
+document.getElementById("recruitmentForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+  const get = id => document.getElementById(id).value.trim();
+  const subject = "Candidature - " + get("applicantPosition") + " - " + get("applicantLastName") + " " + get("applicantFirstName");
+  const body = [
+    "Bonjour,", "",
+    "Je souhaite soumettre ma candidature auprès de CONGO ONE SERVICES SARL.",
+    "Nom : " + get("applicantLastName"),
+    "Postnom : " + get("applicantMiddleName"),
+    "Prénom : " + get("applicantFirstName"),
+    "Téléphone : " + get("applicantPhone"),
+    "E-mail : " + get("applicantEmail"),
+    "Poste souhaité : " + get("applicantPosition"),
+    "Expérience et qualifications : " + get("applicantExperience"),
+    "Disponibilité : " + get("applicantAvailability"), "",
+    "Je joindrai mon CV et mes pièces justificatives."
+  ].join("\\n");
+  document.getElementById("recruitmentFormMessage").textContent = "Votre messagerie va s’ouvrir. Joignez votre CV et vos pièces justificatives avant d’envoyer.";
+  window.location.href = "mailto:copservicessarl@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+});
+</script>
+</body>
+</html>
