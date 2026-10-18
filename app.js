@@ -15,6 +15,8 @@ import {
   collection,
   addDoc,
   getDocs,
+  query,
+  where,
   setDoc,
   deleteDoc,
   serverTimestamp
@@ -129,6 +131,7 @@ document.querySelector("#adminLoginForm").addEventListener("submit", async (e) =
       "Connexion réussie. Bienvenue dans votre espace gérant !";
 
     await afficherPersonnel();
+    await afficherAffectationsAdmin();
 
   } catch (error) {
     console.error("Erreur administrateur :", error);
@@ -239,6 +242,8 @@ document.querySelector("#employeeLoginForm").addEventListener("submit", async (e
       document.querySelector("#employeeDashboardName").textContent =
         "Fiche employé non accessible";
     }
+
+    await afficherAffectationsEmploye(result.user.uid);
 
     message.textContent =
       "Connexion réussie. Bienvenue dans COP MANAGEMENT !";
@@ -601,6 +606,135 @@ window.deconnexionEmploye = async function () {
 
   }
 };
+
+
+// MODULE AFFECTATIONS : ENREGISTREMENT ET CONSULTATION
+const assignmentForm = document.querySelector("#assignmentForm");
+
+if (assignmentForm) {
+  assignmentForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const button = assignmentForm.querySelector('button[type="submit"]');
+    const message = document.querySelector("#assignmentMessage");
+    button.disabled = true;
+    message.textContent = "Enregistrement en cours...";
+
+    try {
+      await verifierAdministrateur();
+      const site = document.querySelector("#assignmentSite").value.trim();
+      const adresse = document.querySelector("#assignmentAddress").value.trim();
+      const matricule = document.querySelector("#assignmentMatricule").value.trim().toUpperCase();
+      const poste = document.querySelector("#assignmentPosition").value.trim();
+      const dateAffectation = document.querySelector("#assignmentDate").value;
+      const consignes = document.querySelector("#assignmentInstructions").value.trim();
+
+      if (!/^COP\\d{4}$/.test(matricule)) {
+        throw new Error("Matricule invalide. Exemple : COP0001.");
+      }
+
+      const employeesSnapshot = await getDocs(collection(db, "employees"));
+      let employee = null;
+      employeesSnapshot.forEach((employeeDoc) => {
+        const data = employeeDoc.data();
+        if (String(data.matricule || "").toUpperCase() === matricule) {
+          employee = { id: employeeDoc.id, ...data };
+        }
+      });
+
+      if (!employee || !employee.employeeUid) {
+        throw new Error("Aucun compte employé actif ne correspond à ce matricule.");
+      }
+
+      await addDoc(collection(db, "assignments"), {
+        site,
+        adresse,
+        matricule,
+        poste,
+        dateAffectation,
+        consignes,
+        employeeUid: employee.employeeUid,
+        employeeId: employee.id,
+        createdAt: serverTimestamp(),
+        createdBy: auth.currentUser.uid
+      });
+
+      assignmentForm.reset();
+      message.textContent = "Affectation enregistrée. Elle est maintenant disponible dans l'espace de l'employé.";
+      await afficherAffectationsAdmin();
+    } catch (error) {
+      console.error("Erreur affectation :", error);
+      message.textContent = "Enregistrement impossible : " + (error.message || error.code);
+    } finally {
+      button.disabled = false;
+    }
+  });
+}
+
+function creerCarteAffectation(affectation) {
+  const card = document.createElement("article");
+  card.className = "person";
+  const title = document.createElement("strong");
+  title.textContent = (affectation.matricule || "") + " — " + (affectation.site || "Site non précisé");
+  const details = document.createElement("p");
+  details.textContent = "Adresse : " + (affectation.adresse || "—") +
+    " | Poste : " + (affectation.poste || "—") +
+    " | Date : " + (affectation.dateAffectation || "—");
+  card.append(title, details);
+  if (affectation.consignes) {
+    const note = document.createElement("p");
+    note.textContent = "Consignes : " + affectation.consignes;
+    card.appendChild(note);
+  }
+  return card;
+}
+
+async function afficherAffectationsAdmin() {
+  const message = document.querySelector("#assignmentListMessage");
+  const items = document.querySelector("#assignmentItems");
+  if (!message || !items || !auth.currentUser) return;
+  message.textContent = "Chargement des affectations...";
+  items.replaceChildren();
+  try {
+    await verifierAdministrateur();
+    const snapshot = await getDocs(collection(db, "assignments"));
+    if (snapshot.empty) {
+      message.textContent = "Aucune affectation enregistrée pour le moment.";
+      return;
+    }
+    const records = [];
+    snapshot.forEach((item) => records.push(item.data()));
+    records.sort((a, b) => String(b.dateAffectation || "").localeCompare(String(a.dateAffectation || "")));
+    records.forEach((record) => items.appendChild(creerCarteAffectation(record)));
+    message.textContent = records.length + " affectation(s) enregistrée(s).";
+  } catch (error) {
+    console.error("Erreur lecture affectations admin :", error);
+    message.textContent = "Chargement impossible : " + error.code;
+  }
+}
+
+async function afficherAffectationsEmploye(uid) {
+  const message = document.querySelector("#employeeAssignmentMessage");
+  const items = document.querySelector("#employeeAssignmentItems");
+  if (!message || !items) return;
+  message.textContent = "Chargement de vos affectations...";
+  items.replaceChildren();
+  try {
+    const q = query(collection(db, "assignments"), where("employeeUid", "==", uid));
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) {
+      message.textContent = "Aucune affectation ne vous a encore été attribuée.";
+      return;
+    }
+    const records = [];
+    snapshot.forEach((item) => records.push(item.data()));
+    records.sort((a, b) => String(b.dateAffectation || "").localeCompare(String(a.dateAffectation || "")));
+    records.forEach((record) => items.appendChild(creerCarteAffectation(record)));
+    message.textContent = records.length + " affectation(s) disponible(s).";
+  } catch (error) {
+    console.error("Erreur lecture affectations employé :", error);
+    message.textContent = "Impossible de charger vos affectations : " + error.code;
+  }
+}
 
 
 // SERVICE WORKER
