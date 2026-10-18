@@ -12,30 +12,60 @@
 
 <body>
 
-<header>
-  <div class="logo">COP</div>
-  <div>
-    <strong>CONGO ONE SERVICES</strong>
+<header class="site-header">
+  <img class="brand-logo" src="logo-cop.svg" alt="Logo officiel CONGO ONE SERVICES">
+  <div class="brand-copy">
+    <strong>CONGO ONE SERVICES SARL</strong>
     <small>Votre sécurité, notre priorité.</small>
   </div>
+  <span class="brand-tag">COP MANAGEMENT</span>
 </header>
 
 <main>
 
 <!-- ACCUEIL -->
 <section id="accueil">
-  <div class="hero">
-    <small>CONGO ONE SERVICES SARL</small>
-    <h1>COP MANAGEMENT</h1>
-    <p>Plateforme de gestion du personnel et des activités.</p>
-  </div>
+  <section class="home-hero">
+    <div class="home-brand">
+      <img src="logo-cop.svg" alt="Logo CONGO ONE SERVICES" class="home-logo">
+      <div>
+        <span class="eyebrow">CONGO ONE SERVICES SARL</span>
+        <h1>La sécurité, le service et la confiance.</h1>
+        <p class="home-lead">Des solutions professionnelles adaptées aux besoins des entreprises, des institutions et des particuliers.</p>
+      </div>
+    </div>
+    <div class="home-actions">
+      <button type="button" onclick="ouvrirConnexion('gerant')">Espace gérant</button>
+      <button type="button" class="button-secondary" onclick="ouvrirConnexion('employe')">Espace employé</button>
+    </div>
+  </section>
 
-  <div class="card">
-    <h2>Bienvenue</h2>
-    <p>Veuillez choisir votre espace de connexion.</p>
-    <button type="button" onclick="ouvrirConnexion('gerant')">Espace gérant</button>
-    <button type="button" onclick="ouvrirConnexion('employe')">Espace employé</button>
-  </div>
+  <section class="card company-intro">
+    <span class="eyebrow">QUI SOMMES-NOUS ?</span>
+    <h2>Bienvenue chez CONGO ONE SERVICES</h2>
+    <p>CONGO ONE SERVICES SARL est une société multiservices basée à Kinshasa, en République démocratique du Congo. Elle développe des prestations de sécurité et d’accompagnement opérationnel pour répondre aux besoins de ses clients.</p>
+    <p class="company-location"><strong>Siège social :</strong> Kinshasa, commune de Kalamu, RDC.</p>
+  </section>
+
+  <section class="services-section">
+    <span class="eyebrow">NOS DOMAINES D’INTERVENTION</span>
+    <h2>Des services pour vous accompagner</h2>
+    <div class="service-grid">
+      <article class="service-card"><span>🛡️</span><h3>Gardiennage</h3><p>Surveillance et sécurité privée des personnes et des biens.</p></article>
+      <article class="service-card"><span>📹</span><h3>Vidéosurveillance</h3><p>Solutions de surveillance et de suivi des installations.</p></article>
+      <article class="service-card"><span>🔥</span><h3>Service incendie</h3><p>Appui à la prévention et à la sécurité incendie.</p></article>
+      <article class="service-card"><span>🧹</span><h3>Nettoyage</h3><p>Entretien et propreté des espaces professionnels.</p></article>
+      <article class="service-card"><span>🚘</span><h3>Chauffeurs</h3><p>Prestations de conduite et services associés.</p></article>
+      <article class="service-card"><span>🤝</span><h3>Autres services</h3><p>Des prestations complémentaires selon les besoins convenus avec nos clients.</p></article>
+    </div>
+  </section>
+
+  <section class="card home-contact">
+    <h2>Votre partenaire de confiance</h2>
+    <p>Vous souhaitez obtenir des informations ou présenter un besoin ? Contactez CONGO ONE SERVICES SARL.</p>
+    <p><strong>Notre engagement :</strong> professionnalisme, disponibilité et sens du service.</p>
+    <p class="note">Les coordonnées téléphoniques et l’adresse e-mail professionnelle seront ajoutées dès leur confirmation.</p>
+  </section>
 </section>
 
 <!-- CONNEXION GERANT -->
