@@ -1,4 +1,419 @@
-<!-- ESPACE PERSONNEL EMPLOYÉ -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#30363b">
+  <title>COP MANAGEMENT - CONGO ONE SERVICES</title>
+  <meta name="description" content="Application de gestion de CONGO ONE SERVICES SARL.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.webmanifest">
+</head>
+
+<body>
+
+<header>
+  <div class="logo">COP</div>
+  <div>
+    <strong>CONGO ONE SERVICES</strong>
+    <small>Votre sécurité, notre priorité.</small>
+  </div>
+</header>
+
+<main>
+
+<!-- ACCUEIL -->
+<section id="accueil">
+  <div class="hero">
+    <small>CONGO ONE SERVICES SARL</small>
+    <h1>COP MANAGEMENT</h1>
+    <p>Plateforme de gestion du personnel et des activités.</p>
+  </div>
+
+  <div class="card">
+    <h2>Bienvenue</h2>
+    <p>Veuillez choisir votre espace de connexion.</p>
+    <button type="button" onclick="ouvrirConnexion('gerant')">Espace gérant</button>
+    <button type="button" onclick="ouvrirConnexion('employe')">Espace employé</button>
+  </div>
+</section>
+
+<!-- CONNEXION GERANT -->
+<section id="connexion-gerant" class="card" hidden>
+  <h2>Connexion du gérant</h2>
+
+  <form id="adminLoginForm">
+    <label>Adresse e-mail
+      <input type="email" id="adminEmail" required>
+    </label>
+
+    <label>Mot de passe
+      <input type="password" id="adminPassword" required>
+    </label>
+
+    <button type="submit">Se connecter</button>
+  </form>
+
+  <p id="adminMessage" role="status"></p>
+  <button type="button" onclick="retourAccueil()">Retour</button>
+</section>
+
+<!-- CONNEXION EMPLOYE -->
+<section id="connexion-employe" class="card" hidden>
+  <h2>Connexion employé</h2>
+
+  <form id="employeeLoginForm">
+    <label>Matricule
+      <input type="text" id="employeeMatricule" placeholder="COP0001" required>
+    </label>
+
+    <label>Mot de passe
+      <input type="password" id="employeePassword" required>
+    </label>
+
+    <button type="submit">Se connecter</button>
+  </form>
+
+  <p id="employeeMessage" role="status"></p>
+  <button type="button" onclick="retourAccueil()">Retour</button>
+</section>
+
+<!-- TABLEAU DE BORD GERANT -->
+<section id="adminDashboard" hidden>
+
+  <div class="hero">
+    <small>ESPACE ADMINISTRATION</small>
+    <h1>Tableau de bord</h1>
+    <p>Bienvenue dans votre espace de gestion COP.</p>
+  </div>
+
+  <div id="dashboardAccueil">
+    <div class="card">
+      <h2>Gestion de l'entreprise</h2>
+      <p>Sélectionnez un module pour continuer.</p>
+
+      <div class="grid">
+        <button type="button" onclick="afficherModule('module-personnel')">👥 Personnel</button>
+        <button type="button" onclick="afficherModule('module-affectations')">📍 Affectations</button>
+        <button type="button" onclick="afficherModule('module-horaires')">🕒 Horaires</button>
+        <button type="button" onclick="afficherModule('module-rapports')">📋 Rapports</button>
+        <button type="button" onclick="afficherModule('module-documents')">📁 Documents</button>
+        <button type="button" onclick="afficherModule('module-conges')">📝 Congés et absences</button>
+        <button type="button" onclick="afficherModule('module-salaires')">💰 Salaires</button>
+        <button type="button" onclick="afficherModule('module-clients')">🏢 Clients et contrats</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE PERSONNEL -->
+  <section id="module-personnel" class="module card" hidden>
+    <h2>Gestion du personnel</h2>
+    <p>Enregistrement et suivi des agents de CONGO ONE SERVICES.</p>
+
+    <form id="employeeForm">
+      <label>Nom
+        <input type="text" id="employeeNom" required>
+      </label>
+
+      <label>Postnom
+        <input type="text" id="employeePostnom" required>
+      </label>
+
+      <label>Prénom
+        <input type="text" id="employeePrenom" required>
+      </label>
+
+      <label>Sexe
+        <select id="employeeSexe">
+          <option value="">Sélectionner</option>
+          <option value="Masculin">Masculin</option>
+          <option value="Féminin">Féminin</option>
+        </select>
+      </label>
+
+      <label>Date de naissance
+        <input type="date" id="employeeNaissance">
+      </label>
+
+      <label>Téléphone
+        <input type="tel" id="employeeTelephone" placeholder="+243" required>
+      </label>
+
+      <label>Adresse
+        <input type="text" id="employeeAdresse">
+      </label>
+
+      <label>Adresse e-mail
+        <input type="email" id="employeeEmail">
+      </label>
+
+      <label>Fonction
+        <input type="text" id="employeeFonction" required>
+      </label>
+
+      <label>Date d'engagement
+        <input type="date" id="employeeEngagement">
+      </label>
+
+      <label>Type de contrat
+        <select id="employeeContrat">
+          <option value="">Sélectionner</option>
+          <option value="CDI">CDI</option>
+          <option value="CDD">CDD</option>
+          <option value="Journalier">Journalier</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </label>
+
+      <label>Statut
+        <select id="employeeStatut">
+          <option value="Actif">Actif</option>
+          <option value="En attente">En attente</option>
+          <option value="Suspendu">Suspendu</option>
+        </select>
+      </label>
+    </form>
+
+    <p class="note">
+      Matricule automatique : COP0001, COP0002, COP0003...
+    </p>
+
+    <div id="personnelList" class="card">
+      <h2>Liste du personnel</h2>
+      <p id="personnelMessage">Chargement des employés...</p>
+      <div id="personnelItems"></div>
+    </div>
+
+    <button type="button" onclick="retourModules()">Retour au tableau de bord</button>
+  </section>
+
+  <!-- MODULE AFFECTATIONS -->
+  <section id="module-affectations" class="module card" hidden>
+    <h2>Affectations des agents</h2>
+
+    <label>Nom du site
+      <input type="text" placeholder="Nom du site">
+    </label>
+
+    <label>Adresse du site
+      <input type="text" placeholder="Adresse du site">
+    </label>
+
+    <label>Matricule de l'agent
+      <input type="text" placeholder="COP0001">
+    </label>
+
+    <label>Poste affecté
+      <input type="text" placeholder="Poste de garde">
+    </label>
+
+    <label>Date d'affectation
+      <input type="date">
+    </label>
+
+    <button type="button" onclick="retourModules()">Retour au tableau de bord</button>
+  </section>
+
+  <!-- MODULE HORAIRES -->
+  <section id="module-horaires" class="module card" hidden>
+    <h2>Gestion des horaires</h2>
+
+    <label>Matricule de l'agent
+      <input type="text" placeholder="COP0001">
+    </label>
+
+    <label>Date de service
+      <input type="date">
+    </label>
+
+    <label>Heure de début
+      <input type="time">
+    </label>
+
+    <label>Heure de fin
+      <input type="time">
+    </label>
+
+    <label>Type de service
+      <select>
+        <option value="">Sélectionner</option>
+        <option>Jour</option>
+        <option>Nuit</option>
+        <option>Rotation</option>
+      </select>
+    </label>
+
+    <button type="button" onclick="retourModules()">Retour au tableau de bord</button>
+  </section>
+
+  <!-- MODULE RAPPORTS -->
+  <section id="module-rapports" class="module card" hidden>
+    <h2>Rapports d'activités</h2>
+
+    <label>Matricule de l'agent
+      <input type="text" placeholder="COP0001">
+    </label>
+
+    <label>Site concerné
+      <input type="text" placeholder="Nom du site">
+    </label>
+
+    <label>Date du rapport
+      <input type="date">
+    </label>
+
+    <label>Description du rapport
+      <textarea rows="5" placeholder="Décrire les activités et événements..."></textarea>
+    </label>
+
+    <label>Photo ou pièce jointe
+      <input type="file" accept="image/*,.pdf,.doc,.docx" capture="environment">
+    </label>
+
+    <button type="button" onclick="retourModules()">Retour au tableau de bord</button>
+  </section>
+
+  <!-- MODULE DOCUMENTS -->
+  <section id="module-documents" class="module card" hidden>
+    <h2>Dossiers et documents</h2>
+
+    <label>Matricule de l'employé
+      <input type="text" placeholder="COP0001">
+    </label>
+
+    <label>Type de document
+      <select>
+        <option value="">Sélectionner</option>
+        <option>CV</option>
+        <option>Carte d'identité</option>
+        <option>Diplôme</option>
+        <option>Certificat</option>
+        <option>Contrat de travail</option>
+        <option>Autre</option>
+      </select>
+    </label>
+
+    <label>Ajouter un document
+      <input type="file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+    </label>
+
+    <button type="button" onclick="retourModules()">Retour au tableau de bord</button>
+  </section>
+
+  <!-- MODULE CONGES -->
+  <section id="module-conges" class="module card" hidden>
+    <h2>Congés et absences</h2>
+
+    <label>Matricule de l'employé
+      <input type="text" placeholder="COP0001">
+    </label>
+
+    <label>Type de demande
+      <select>
+        <option value="">Sélectionner</option>
+        <option>Congé annuel</option>
+        <option>Congé maladie</option>
+        <option>Permission</option>
+        <option>Absence</option>
+      </select>
+    </label>
+
+    <label>Date de début
+      <input type="date">
+    </label>
+
+    <label>Date de fin
+      <input type="date">
+    </label>
+
+    <label>Motif
+      <textarea rows="4" placeholder="Motif de la demande"></textarea>
+    </label>
+
+    <button type="button" onclick="retourModules()">Retour au tableau de bord</button>
+  </section>
+
+  <!-- MODULE SALAIRES -->
+  <section id="module-salaires" class="module card" hidden>
+    <h2>Gestion des salaires</h2>
+
+    <label>Matricule de l'employé
+      <input type="text" placeholder="COP0001">
+    </label>
+
+    <label>Mois
+      <select>
+        <option value="">Sélectionner</option>
+        <option>Janvier</option>
+        <option>Février</option>
+        <option>Mars</option>
+        <option>Avril</option>
+        <option>Mai</option>
+        <option>Juin</option>
+        <option>Juillet</option>
+        <option>Août</option>
+        <option>Septembre</option>
+        <option>Octobre</option>
+        <option>Novembre</option>
+        <option>Décembre</option>
+      </select>
+    </label>
+
+    <label>Salaire
+      <input type="number" min="0" placeholder="Montant">
+    </label>
+
+    <label>Devise
+      <select>
+        <option>USD</option>
+        <option>CDF</option>
+      </select>
+    </label>
+
+    <button type="button" onclick="retourModules()">Retour au tableau de bord</button>
+  </section>
+
+  <!-- MODULE CLIENTS -->
+  <section id="module-clients" class="module card" hidden>
+    <h2>Clients et contrats</h2>
+
+    <label>Nom du client
+      <input type="text" placeholder="Nom du client">
+    </label>
+
+    <label>Téléphone
+      <input type="tel" placeholder="+243">
+    </label>
+
+    <label>Adresse
+      <input type="text" placeholder="Adresse du client">
+    </label>
+
+    <label>Type de prestation
+      <input type="text" placeholder="Gardiennage, nettoyage, etc.">
+    </label>
+
+    <label>Date de début du contrat
+      <input type="date">
+    </label>
+
+    <label>Date de fin du contrat
+      <input type="date">
+    </label>
+
+    <button type="button" onclick="retourModules()">Retour au tableau de bord</button>
+  </section>
+
+  <!-- DECONNEXION GERANT -->
+  <div class="card">
+    <button type="button" onclick="deconnexionAdmin()">
+      Se déconnecter
+    </button>
+  </div>
+
+</section>
+
+<!-- ESPACE PERSONNEL EMPLOYE -->
 <section id="employeeDashboard" hidden>
 
   <div class="hero">
@@ -10,9 +425,11 @@
   <div class="card">
     <h2>Bienvenue dans votre espace personnel</h2>
     <p>Vous êtes connecté à COP MANAGEMENT.</p>
+
     <p><strong>Matricule :</strong>
       <span id="employeeDashboardMatricule">---</span>
     </p>
+
     <p><strong>Adresse e-mail :</strong>
       <span id="employeeDashboardEmail">---</span>
     </p>
@@ -61,3 +478,67 @@
   </div>
 
 </section>
+
+</main>
+
+<footer>
+  <p>CONGO ONE SERVICES SARL</p>
+  <small>Votre sécurité, notre priorité.</small>
+  <small>COP MANAGEMENT © 2026</small>
+</footer>
+
+<!-- NAVIGATION -->
+<script>
+
+function ouvrirConnexion(type) {
+
+  document.getElementById("accueil").hidden = true;
+  document.getElementById("connexion-gerant").hidden = true;
+  document.getElementById("connexion-employe").hidden = true;
+
+  if (type === "gerant") {
+    document.getElementById("connexion-gerant").hidden = false;
+  }
+
+  if (type === "employe") {
+    document.getElementById("connexion-employe").hidden = false;
+  }
+
+}
+
+function retourAccueil() {
+
+  document.getElementById("connexion-gerant").hidden = true;
+  document.getElementById("connexion-employe").hidden = true;
+  document.getElementById("accueil").hidden = false;
+
+}
+
+function afficherModule(moduleId) {
+
+  document.getElementById("dashboardAccueil").hidden = true;
+
+  document.querySelectorAll(".module").forEach(function(module) {
+    module.hidden = true;
+  });
+
+  document.getElementById(moduleId).hidden = false;
+
+}
+
+function retourModules() {
+
+  document.querySelectorAll(".module").forEach(function(module) {
+    module.hidden = true;
+  });
+
+  document.getElementById("dashboardAccueil").hidden = false;
+
+}
+
+</script>
+
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
