@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#30363b">
+  <title>Espace client - CONGO ONE SERVICES SARL</title>
+  <meta name="description" content="Formulaire de demande de prestation auprès de CONGO ONE SERVICES SARL.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.webmanifest">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand-home" href="index.html" aria-label="Accueil CONGO ONE SERVICES"><img class="brand-logo" src="logo-cop.svg" alt="Logo CONGO ONE SERVICES"></a>
+  <div class="brand-copy"><strong>CONGO ONE SERVICES SARL</strong><small>Votre sécurité, notre priorité.</small></div>
+  <span class="brand-tag">COP MANAGEMENT</span>
+  <nav class="header-nav" aria-label="Navigation principale">
+    <a href="services.html">Nos services</a>
+    <a href="qui-sommes-nous.html">Qui sommes-nous</a>
+    <a href="actualites.html">Actualités</a>
+    <a href="contact.html">Comment nous contacter</a>
+    <a href="carrieres.html">Carrières</a>
+    <a href="espace-client.html" aria-current="page">Espace client</a>
+  </nav>
+</header>
+<main class="public-page">
+  <details class="card public-form-section public-accordion" id="nouveau-client">
+    <summary>
+      <span class="eyebrow">ESPACE CLIENT</span>
+      <strong>Vous êtes un nouveau client ?</strong>
+      <small> Cliquez ici pour afficher le formulaire et nos coordonnées.</small>
+    </summary>
+    <div class="accordion-content">
+      <p>Présentez-nous votre besoin. Votre demande sera préparée et envoyée directement à notre équipe via WhatsApp.</p>
+      <div class="public-contact-info">
+        <p><strong>Téléphone / WhatsApp :</strong> <a href="https://wa.me/243816823390" target="_blank" rel="noopener">+243 816 823 390</a></p>
+        <p><strong>E-mail :</strong> <a href="mailto:copservicessarl@gmail.com">copservicessarl@gmail.com</a></p>
+        <p><strong>Siège social :</strong> Kinshasa, commune de Kalamu, RDC.</p>
+      </div>
+    <form id="newClientForm" class="public-form">
+      <label>Nom de l’entreprise ou du client
+        <input id="clientName" type="text" required>
+      </label>
+      <label>Personne à contacter
+        <input id="clientContact" type="text" required>
+      </label>
+      <label>Téléphone
+        <input id="clientPhone" type="tel" placeholder="+243..." required>
+      </label>
+      <label>Adresse ou commune d’intervention
+        <input id="clientAddress" type="text" required>
+      </label>
+      <label>Service recherché
+        <select id="clientService" required>
+          <option value="">Sélectionner un service</option>
+          <option>Gardiennage et sécurité privée</option>
+          <option>Vidéosurveillance</option>
+          <option>Service incendie</option>
+          <option>Nettoyage et entretien</option>
+          <option>Chauffeur</option>
+          <option>Autres services</option>
+        </select>
+      </label>
+      <label>Décrivez votre besoin
+        <textarea id="clientNeed" rows="4" required></textarea>
+      </label>
+      <button type="submit">Envoyer ma demande par WhatsApp</button>
+      <p id="clientFormMessage" class="note" role="status"></p>
+    </form>
+    </div>
+  </details>
+</main>
+<footer>
+  <p>CONGO ONE SERVICES SARL</p>
+  <small>Votre sécurité, notre priorité.</small>
+  <p><a href="tel:+243816823390">+243 816 823 390</a> · <a href="mailto:copservicessarl@gmail.com">copservicessarl@gmail.com</a></p>
+  <small>COP MANAGEMENT © 2026</small>
+</footer>
+<script>
+document.getElementById("newClientForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+  const fields = [
+    ["Entreprise / client", document.getElementById("clientName").value.trim()],
+    ["Personne à contacter", document.getElementById("clientContact").value.trim()],
+    ["Téléphone", document.getElementById("clientPhone").value.trim()],
+    ["Adresse / commune", document.getElementById("clientAddress").value.trim()],
+    ["Service recherché", document.getElementById("clientService").value],
+    ["Besoin", document.getElementById("clientNeed").value.trim()]
+  ];
+  const message = "Bonjour CONGO ONE SERVICES SARL, je souhaite faire une demande de prestation.\\n\\n" +
+    fields.map(([label, value]) => label + " : " + value).join("\\n");
+  document.getElementById("clientFormMessage").textContent = "Ouverture de WhatsApp avec votre demande. Vérifiez le message puis appuyez sur Envoyer.";
+  window.open("https://wa.me/243816823390?text=" + encodeURIComponent(message), "_blank", "noopener");
+});
+</script>
+</body>
+</html>
