@@ -1,1 +1,30 @@
 *{box-sizing:border-box}body{margin:0;background:#f1f3f5;color:#252a2e;font:16px Arial,sans-serif}header{background:#30363b;color:white;padding:16px;display:flex;gap:12px;align-items:center}.logo{border:2px solid #ddd;border-radius:10px;padding:12px;font-weight:bold}small{display:block;color:#cbd1d5;margin-top:4px}main{max-width:850px;margin:auto;padding:18px}.hero{background:#41484e;color:white;border-radius:15px;padding:24px}.hero small{color:#f2b4aa;letter-spacing:1px}.hero h1{font-size:30px}.card{background:white;border-radius:13px;padding:18px;margin-top:15px;border:1px solid #ddd}h2{font-size:20px}form{display:grid;gap:12px}label{font-size:14px;font-weight:bold}input,select{display:block;width:100%;padding:12px;margin-top:5px;border:1px solid #bbc2c8;border-radius:7px;font-size:16px}button{padding:13px;background:#a64036;color:white;border:0;border-radius:8px;font-weight:bold}.note{font-size:12px;color:#667}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.grid div,.person{background:#f2f4f5;padding:13px;border-radius:8px}.person{margin:7px 0}footer{text-align:center;color:#667;padding:22px}@media(min-width:650px){form{grid-template-columns:repeat(2,1fr)}button{align-self:end}}
+
+/* Accueil professionnel CONGO ONE SERVICES */
+.site-header{display:flex;align-items:center;gap:14px;padding:12px 20px;flex-wrap:wrap}
+.brand-logo{width:62px;height:68px;object-fit:contain;background:#fff;border-radius:10px;padding:4px}
+.brand-copy strong{font-size:18px;letter-spacing:.5px}
+.brand-copy small{color:#e3e6e8}
+.brand-tag{margin-left:auto;font-size:11px;letter-spacing:1.5px;color:#f2c230;font-weight:bold}
+.home-hero{background:linear-gradient(135deg,#252b30,#505960);color:#fff;border-radius:18px;padding:30px;margin-top:8px;box-shadow:0 8px 24px #20283020}
+.home-brand{display:flex;align-items:center;gap:24px}
+.home-logo{width:145px;height:155px;object-fit:contain;background:#fff;border-radius:16px;padding:9px;flex-shrink:0}
+.eyebrow{display:block;color:#a64036;font-size:12px;font-weight:bold;letter-spacing:1.7px;margin-bottom:9px}
+.home-hero .eyebrow{color:#f2c230}
+.home-hero h1{font-size:clamp(27px,5vw,42px);line-height:1.12;margin:8px 0 12px}
+.home-lead{font-size:17px;line-height:1.6;color:#edf0f2;max-width:650px}
+.home-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.home-actions button{min-width:170px}
+.button-secondary{background:transparent;border:1px solid #fff;color:#fff}
+.company-intro{padding:25px;line-height:1.7}
+.company-intro h2,.services-section h2{margin-top:4px}
+.company-location{border-top:1px solid #e5e7e9;padding-top:12px}
+.services-section{padding:28px 4px 8px}
+.service-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.service-card{background:#fff;border:1px solid #e1e4e6;border-radius:13px;padding:18px;box-shadow:0 3px 12px #2028300b}
+.service-card>span{font-size:27px}
+.service-card h3{margin:10px 0 6px;color:#30363b}
+.service-card p,.home-contact p{line-height:1.55;color:#596168}
+.home-contact{padding:25px}
+@media(max-width:600px){.home-brand{align-items:flex-start;gap:14px}.home-logo{width:92px;height:105px}.home-hero{padding:20px}.home-lead{font-size:15px}.service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.brand-tag{width:100%;margin-left:76px;margin-top:-12px}}
+@media(max-width:380px){.service-grid{grid-template-columns:1fr}.home-brand{display:block}.home-logo{margin-bottom:16px}}
