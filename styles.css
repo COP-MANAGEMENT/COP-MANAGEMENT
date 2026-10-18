@@ -43,3 +43,18 @@
 .public-form .note{grid-column:1/-1}
 .home-contact a,footer a{color:inherit;font-weight:700}
 @media(max-width:600px){.public-form{grid-template-columns:1fr}.public-form label:has(textarea),.public-form button,.public-form .note{grid-column:1}.public-form-section,.news-section{padding:19px}}
+
+
+/* Rubriques publiques repliables pour alléger la page d'accueil */
+.public-accordion{padding:0;overflow:hidden}
+.public-accordion>summary{list-style:none;cursor:pointer;padding:20px 22px;display:flex;flex-direction:column;gap:5px;position:relative}
+.public-accordion>summary::-webkit-details-marker{display:none}
+.public-accordion>summary::after{content:"＋";position:absolute;right:22px;top:24px;font-size:24px;font-weight:bold;color:#a64036}
+.public-accordion[open]>summary::after{content:"−"}
+.public-accordion>summary strong{font-size:20px;color:#30363b;padding-right:35px}
+.public-accordion>summary small{font-size:13px;color:#667078;margin-top:2px;padding-right:28px}
+.public-accordion .eyebrow{margin-bottom:2px}
+.accordion-content{padding:0 22px 22px;border-top:1px solid #e5e7e9}
+.public-contact-info{background:#f4f5f6;border-left:4px solid #a64036;border-radius:8px;padding:10px 14px;margin:14px 0}
+.public-contact-info p{margin:7px 0;line-height:1.5}
+.public-contact-info a{color:#30363b;font-weight:700}
