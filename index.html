@@ -183,12 +183,24 @@
         </select>
       </label>
 
-      <label>Statut
+      <label>Statut professionnel
         <select id="employeeStatut">
-          <option value="Actif">Actif</option>
           <option value="En attente">En attente</option>
+          <option value="Actif">Actif</option>
+          <option value="En congé">En congé</option>
           <option value="Suspendu">Suspendu</option>
+          <option value="Inactif">Inactif</option>
+          <option value="Mise à pied">Mise à pied</option>
+          <option value="Sanctionné">Sanctionné</option>
         </select>
+      </label>
+
+      <label>Site de travail actuel
+        <input type="text" id="employeeSite" placeholder="Nom du site (si déjà connu)">
+      </label>
+
+      <label>Adresse de la photo (URL)
+        <input type="url" id="employeePhotoUrl" placeholder="https://...">
       </label>
 
     </form>
@@ -442,16 +454,15 @@
   </div>
 
   <div class="card">
-    <h2>Bienvenue dans votre espace personnel</h2>
-    <p>Vous êtes connecté à COP MANAGEMENT.</p>
-
-    <p><strong>Matricule :</strong>
-      <span id="employeeDashboardMatricule">---</span>
-    </p>
-
-    <p><strong>Adresse e-mail :</strong>
-      <span id="employeeDashboardEmail">---</span>
-    </p>
+    <h2>Mon profil professionnel</h2>
+    <img id="employeeDashboardPhoto" alt="Photo de l'employé"
+      hidden style="width:120px;height:120px;object-fit:cover;border-radius:50%;">
+    <p><strong>Nom complet :</strong> <span id="employeeDashboardName">Non renseigné</span></p>
+    <p><strong>Matricule :</strong> <span id="employeeDashboardMatricule">---</span></p>
+    <p><strong>Fonction :</strong> <span id="employeeDashboardFunction">Non renseignée</span></p>
+    <p><strong>Téléphone :</strong> <span id="employeeDashboardPhone">Non renseigné</span></p>
+    <p><strong>Site de travail actuel :</strong> <span id="employeeDashboardSite">Non renseigné</span></p>
+    <p><strong>Statut professionnel :</strong> <span id="employeeDashboardStatus">Non renseigné</span></p>
   </div>
 
   <div class="card">
