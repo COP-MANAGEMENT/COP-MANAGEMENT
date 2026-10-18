@@ -1,8 +1,9 @@
-const CACHE_NAME = "cop-management-v11";
+const CACHE_NAME = "cop-management-v12";
 
 const FILES = [
 "./",
 "./index.html",
+"./services.html",
 "./styles.css",
 "./app.js",
 "./manifest.webmanifest",
