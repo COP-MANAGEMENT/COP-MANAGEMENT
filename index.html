@@ -92,6 +92,8 @@
 <!-- TABLEAU DE BORD GERANT -->
 <section id="adminDashboard" hidden>
 
+  <div class="card cop-assistant-entry"><h2>🤖 Assistant intelligent</h2><p>Une aide IA pour le gérant et les responsables autorisés.</p><button type="button" data-open-cop-assistant>Ouvrir l’assistant COP</button></div>
+
   <div class="hero">
     <small>ESPACE ADMINISTRATION</small>
     <h1>Tableau de bord</h1>
@@ -463,6 +465,8 @@
 <!-- ESPACE PERSONNEL EMPLOYE -->
 <section id="employeeDashboard" hidden>
 
+  <div class="card cop-assistant-entry"><h2>🤖 Assistant intelligent</h2><p>Posez vos questions professionnelles à l’assistant COP.</p><button type="button" data-open-cop-assistant>Ouvrir l’assistant COP</button></div>
+
   <div class="hero">
     <small>CONGO ONE SERVICES SARL</small>
     <h1>Mon espace employé</h1>
@@ -546,6 +550,24 @@
 
 </section>
 
+
+<!-- ASSISTANT IA COP MANAGEMENT -->
+<section id="copAssistantPanel" class="card cop-assistant-panel" hidden aria-label="Assistant intelligent COP">
+  <div class="cop-assistant-heading">
+    <div><small>CONGO ONE SERVICES</small><h2>🤖 Assistant intelligent</h2><p>Propulsé par Google Gemini</p></div>
+    <button type="button" id="copAssistantClose" class="cop-assistant-close" aria-label="Fermer l’assistant">✕</button>
+  </div>
+  <div id="copAssistantMessages" class="cop-assistant-messages" aria-live="polite">
+    <div class="cop-chat-bubble cop-chat-bot">Bonjour ! Je suis l’assistant intelligent de COP MANAGEMENT. Comment puis-je vous aider dans votre travail ?</div>
+  </div>
+  <form id="copAssistantForm" class="cop-assistant-form">
+    <label class="cop-assistant-label" for="copAssistantInput">Votre message</label>
+    <textarea id="copAssistantInput" rows="2" maxlength="2000" placeholder="Écrivez votre question..." required></textarea>
+    <button id="copAssistantSend" type="submit">Envoyer</button>
+  </form>
+  <p id="copAssistantStatus" class="note" role="status">Vos échanges ne remplacent pas les décisions du gérant ou d’un responsable habilité.</p>
+</section>
+
 </main>
 
 <footer>
@@ -580,6 +602,7 @@ function retourModules() {
 </script>
 
 <script type="module" src="app.js"></script>
+<script type="module" src="assistant.js"></script>
 
 </body>
   </html>
