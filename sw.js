@@ -1,4 +1,4 @@
-const CACHE_NAME = "cop-management-v14";
+const CACHE_NAME = "cop-management-v15";
 
 const FILES = [
 "./",
@@ -12,7 +12,8 @@ const FILES = [
 "./styles.css",
 "./app.js",
 "./manifest.webmanifest",
-"./logo-cop.svg"
+"./logo-cop.svg",
+"./fichier_000000005f08820eacac3df97f5f3cab.png"
 ];
 
 self.addEventListener("install", event => {
