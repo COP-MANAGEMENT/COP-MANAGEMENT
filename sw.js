@@ -13,7 +13,7 @@ const FILES = [
 "./app.js",
 "./manifest.webmanifest",
 "./logo-cop.svg",
-"./fichier_000000005f08820eacac3df97f5f3cab.png"
+"./file_000000005f08820eacac3df97f5f3cab.png"
 ];
 
 self.addEventListener("install", event => {
