@@ -12,22 +12,7 @@
 
 <body>
 
-<header class="site-header">
-  <img class="brand-logo" src="logo-cop.svg" alt="Logo officiel CONGO ONE SERVICES">
-  <div class="brand-copy">
-    <strong>CONGO ONE SERVICES SARL</strong>
-    <small>Votre sécurité, notre priorité.</small>
-  </div>
-  <span class="brand-tag">COP MANAGEMENT</span>
-  <nav class="header-nav" aria-label="Navigation principale">
-    <a href="services.html">Nos services</a>
-    <a href="qui-sommes-nous.html">Qui sommes-nous</a>
-    <a href="actualites.html">Actualités</a>
-    <a href="contact.html">Comment nous contacter</a>
-    <a href="carrieres.html">Carrières</a>
-    <a href="espace-client.html">Espace client</a>
-  </nav>
-</header>
+<!-- La couverture photographique remplace l'ancien bandeau logo/menu sur l'accueil. -->
 
 <main>
 
@@ -38,22 +23,30 @@
       <img src="file_000000005f08820eacac3df97f5f3cab.png"
            alt="Agent de sécurité de CONGO ONE SERVICES en uniforme"
            loading="eager">
-      <figcaption>Nos agents, votre sécurité au quotidien.</figcaption>
+      <figcaption class="home-cover-content">
+        <span class="cover-kicker">CONGO ONE SERVICES SARL</span>
+        <h1>Votre sécurité, notre priorité.</h1>
+        <p>La sécurité, le service et la confiance.</p>
+        <div class="cover-actions">
+          <a class="cover-button" href="services.html">Découvrir nos services</a>
+          <a class="cover-button cover-button-light" href="contact.html">Contacter</a>
+          <a class="cover-button cover-button-outline" href="qui-sommes-nous.html">En savoir plus</a>
+        </div>
+      </figcaption>
     </figure>
-    <div class="home-brand">
-      <img src="logo-cop.svg" alt="Logo CONGO ONE SERVICES" class="home-logo">
-      <div>
-        <span class="eyebrow">CONGO ONE SERVICES SARL</span>
-        <h1>La sécurité, le service et la confiance.</h1>
-        <p class="home-lead">Des solutions professionnelles adaptées aux besoins des entreprises, des institutions et des particuliers.</p>
-      </div>
-    </div>
+    <nav class="home-navigation" aria-label="Rubriques du site">
+      <a href="services.html">Nos services</a>
+      <a href="qui-sommes-nous.html">Qui sommes-nous</a>
+      <a href="actualites.html">Actualités</a>
+      <a href="contact.html">Comment nous contacter</a>
+      <a href="carrieres.html">Carrières</a>
+      <a href="espace-client.html">Espace client</a>
+    </nav>
     <div class="home-actions">
       <button type="button" onclick="ouvrirConnexion('gerant')">Espace gérant</button>
       <button type="button" class="button-secondary" onclick="ouvrirConnexion('employe')">Espace employé</button>
     </div>
   </section>
-</section>
 
 <!-- CONNEXION GERANT -->
 <section id="connexion-gerant" class="card" hidden>
