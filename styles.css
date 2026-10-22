@@ -93,3 +93,10 @@
 .public-page>.card{margin-top:8px}
 .brand-home{display:inline-flex;align-items:center}
 @media(max-width:600px){.public-page{padding:12px}}
+
+
+/* Photo de couverture en tête de l'accueil COP */
+.home-guard{position:relative;width:100%;margin:0 0 28px;overflow:hidden;border-radius:16px;background:#171c20;}
+.home-guard img{display:block;width:100%;height:clamp(260px,42vw,470px);object-fit:cover;object-position:center 28%;}
+.home-guard figcaption{position:absolute;left:0;right:0;bottom:0;padding:22px 18px 16px;color:#fff;font-size:clamp(16px,2.4vw,22px);font-weight:700;text-align:center;background:linear-gradient(transparent,rgba(0,0,0,.78));}
+@media(max-width:600px){.home-guard{margin-bottom:22px;border-radius:12px}.home-guard img{height:300px;object-position:center 25%}.home-guard figcaption{padding:28px 12px 13px}}
