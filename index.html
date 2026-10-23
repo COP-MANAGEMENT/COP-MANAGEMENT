@@ -578,16 +578,37 @@
 
 <script>
 function ouvrirConnexion(type) {
-  document.getElementById("accueil").hidden = true;
-  document.getElementById("connexion-gerant").hidden = true;
-  document.getElementById("connexion-employe").hidden = true;
-  if (type === "gerant") document.getElementById("connexion-gerant").hidden = false;
-  if (type === "employe") document.getElementById("connexion-employe").hidden = false;
+  const accueil = document.getElementById("accueil");
+  const connexionGerant = document.getElementById("connexion-gerant");
+  const connexionEmploye = document.getElementById("connexion-employe");
+
+  accueil.hidden = true;
+  connexionGerant.hidden = true;
+  connexionEmploye.hidden = true;
+
+  const formulaire = type === "gerant" ? connexionGerant :
+    type === "employe" ? connexionEmploye : null;
+
+  if (!formulaire) {
+    accueil.hidden = false;
+    return;
+  }
+
+  formulaire.hidden = false;
+
+  // Replace la page en haut après masquage de l'accueil, notamment sur mobile.
+  requestAnimationFrame(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    formulaire.scrollIntoView({ behavior: "smooth", block: "start" });
+    const premierChamp = formulaire.querySelector("input");
+    if (premierChamp) premierChamp.focus({ preventScroll: true });
+  });
 }
 function retourAccueil() {
   document.getElementById("connexion-gerant").hidden = true;
   document.getElementById("connexion-employe").hidden = true;
   document.getElementById("accueil").hidden = false;
+  requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "smooth" }));
 }
 function afficherModule(moduleId) {
   document.getElementById("dashboardAccueil").hidden = true;
