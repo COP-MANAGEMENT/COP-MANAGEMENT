@@ -579,10 +579,13 @@
 <script>
 function ouvrirConnexion(type) {
   const accueil = document.getElementById("accueil");
+  const accueilVisuel = accueil.querySelector(".home-hero");
   const connexionGerant = document.getElementById("connexion-gerant");
   const connexionEmploye = document.getElementById("connexion-employe");
 
-  accueil.hidden = true;
+  // Les formulaires sont à l'intérieur de #accueil : on masque seulement
+  // la couverture, sinon le formulaire est masqué avec son parent.
+  accueilVisuel.hidden = true;
   connexionGerant.hidden = true;
   connexionEmploye.hidden = true;
 
@@ -590,13 +593,11 @@ function ouvrirConnexion(type) {
     type === "employe" ? connexionEmploye : null;
 
   if (!formulaire) {
-    accueil.hidden = false;
+    accueilVisuel.hidden = false;
     return;
   }
 
   formulaire.hidden = false;
-
-  // Replace la page en haut après masquage de l'accueil, notamment sur mobile.
   requestAnimationFrame(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     formulaire.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -607,7 +608,7 @@ function ouvrirConnexion(type) {
 function retourAccueil() {
   document.getElementById("connexion-gerant").hidden = true;
   document.getElementById("connexion-employe").hidden = true;
-  document.getElementById("accueil").hidden = false;
+  document.querySelector("#accueil .home-hero").hidden = false;
   requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "smooth" }));
 }
 function afficherModule(moduleId) {
